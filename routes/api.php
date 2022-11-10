@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CEOController;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,5 @@ Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'regis
 Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
 
 Route::apiResource('/ceo', (App\Http\Controllers\API\CEOController::class))->middleware('auth:api');
+
+Route::get('/user', [App\Http\Controllers\API\UserController::class, 'index']);

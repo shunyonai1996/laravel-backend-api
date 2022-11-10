@@ -7,15 +7,17 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- #追記 set base_url -->
+
     <title>{{ config('app.name', 'Vue Laravel SPA') }}</title>
 
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+    
 </head>
 <body>
 <div id="app">
   <header-component></header-component>
-
   <router-view></router-view>
 </div>
 <!-- Scripts -->

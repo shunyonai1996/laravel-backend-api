@@ -1,51 +1,28 @@
 <template>
-  <div class="login">
-    <div class="form-item">
-      <label for="email">Email</label>
-      <input
-        id="email"
-        autocomplete="off"
-        type="text"
-        v-model="email"
-      >
-    </div>
-    <div class="form-item">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        autocomplete="off"
-        type="password"
-        v-model="password"
-      >
-    </div>
-    <div class="form-item">
-      <button class="button" @click="handle()">Login!</button>
-    </div>
-  </div>
+  <form v-on:submit.prevent="doLogin">
+      <label>E-mail</label>
+      <input type="text" placeholder="E-mail" v-model="user.email" />
+      <label>Password</label>
+      <input type="password placeholder=password" v-model="user.password" />
+      <button type="submit">Login</button>
+  </form>
 </template>
 
 <script>
-
+export default {
+  data() {
+    return {
+      user: {}
+    };
+  },
+  methods: {
+    doLogin() {
+      this.$store.dispatch("api/login", {
+        userId: this.user.email,
+        userPassword: this.user.password,
+      });
+      this.$router.push(this.$route.query.redirect);
+    }
+  }
+};
 </script>
-
-<style scoped>
-.form-item {
-  margin: 0 auto;
-  text-align: center;
-}
-
-label {
-  display: block;
-}
-
-input {
-  width: 50%;
-  padding: .5em;
-  font: inherit;
-}
-
-button {
-  padding: 0.5em;
-  margin: 1em;
-}
-</style>
