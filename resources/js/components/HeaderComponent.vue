@@ -3,11 +3,31 @@
         <div class="container">
             <nav class="navbar navbar-dark">
                 <span class="navbar-brand mb-0 h1">Vue Laravel SPA</span>
+                <button type="button" class="btn btn-danger" @click="doLogout">Logout</button>
+                <router-link to='/home'>ユーザ一覧</router-link>
+                <router-link to='/ceoindex'>会社一覧</router-link>
+                <router-link to='/post'>会社登録</router-link>
             </nav>
         </div>
     </div>
 </template>
+
  
 <script>
-    export default {}
+export default {
+    methods: {
+    doLogout() {
+        axios.get('api/logout')
+    .then(response => {
+        sessionStorage.removeItem("access_token");
+        delete axios.defaults.headers['Authorization'];
+        location.href = '/login'
+    }).catch(error=> {
+        console.log(error);
+    });
+    this.$router.push(this.$route.query.redirect);
+    }
+    
+  }
+}
 </script>

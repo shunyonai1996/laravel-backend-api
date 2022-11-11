@@ -8,6 +8,8 @@ import HeaderComponent from "./components/HeaderComponent";
 import LoginComponent from "./components/LoginComponent";
 import HomeComponent from "./components/HomeComponent";
 import CeoComponent from "./components/CeoComponent";
+import CreateComponent from "./components/CreateComponent";
+import CeoIndexComponent from "./components/CeoIndexComponent";
 
 require('./bootstrap');
 
@@ -29,6 +31,8 @@ Vue.component('header-component', HeaderComponent);
 Vue.component('login-component', LoginComponent);
 Vue.component('home-component', HomeComponent);
 Vue.component('ceo-component', CeoComponent);
+Vue.component('create-component', CreateComponent);
+Vue.component('ceo-index-component', CeoIndexComponent);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -50,6 +54,11 @@ Vue.component('ceo-component', CeoComponent);
             path: '/home',
             name: 'home',
             component: HomeComponent,
+        },
+        {
+            path: '/post',
+            name: 'post',
+            component: CreateComponent,
         },
         {
             path: '/ceo',
