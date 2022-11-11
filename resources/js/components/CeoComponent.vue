@@ -1,29 +1,27 @@
 <template>
   <div>
-      <p v-for="ceo in ceos">{{ ceo.name }} / {{ ceo.email }}</p>
-      <p v-show="errorFlag">サーバとの通信にエラーが発生しています</p>
-  </div> 
+    <ul v-for="ceo in ceos">
+      <li>CEO名：{{ ceo.name }}</li>
+    </ul>
+  </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return{
-        ceos: [],
-        errorFlag: false,
-      }
-    },
-    mounted() {
-      axios.get('api/ceo/1')
-      .then(response => {
-        this.ceos = response.data
-        console.log(response.data)
-        console.log(response.status)
-        console.log(response.headers)
-        console.log(response.statusText)
-        console.log(response.config)
-      })
-      .catch(response => console.log(response))
+export default {
+  data () {
+    return {
+      ceos: []
     }
+  },
+  mounted() {  
+    axios.get('/api/ceo')
+    .then(response => {
+      this.ceos = response.data.ceos
+      console.log(response.data)
+      console.log(this.ceos)
+    })
+    .catch(response => console.log(response));
+    
   }
+}
 </script>

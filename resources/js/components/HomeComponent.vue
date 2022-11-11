@@ -16,7 +16,7 @@ export default {
     };
   },
   mounted() {
-      axios.get('/api/user')
+    axios.get('/api/user')
     .then(response => {
       this.users = response.data.users
       // console.log(response.status)
