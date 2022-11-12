@@ -19,11 +19,10 @@ export default {
     axios.get('/api/user')
     .then(response => {
       this.users = response.data.users
-      // console.log(response.status)
-      // console.log(response.headers)
-      // console.log(response.statusText)
-      // console.log(response.config)
-      
+      console.log(response.status)
+      console.log(response.headers)
+      console.log(response.statusText)
+      console.log(response.config)   
       console.log(response.data)
       console.log(this.users)
     })

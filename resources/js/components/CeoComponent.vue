@@ -10,18 +10,16 @@
 export default {
   data () {
     return {
-      ceos: []
+      ceos: [],
     }
   },
-  mounted() {  
+  mounted() {
     axios.get('/api/ceo')
     .then(response => {
-      this.ceos = response.data.ceos
+      this.ceos = response.data.ceos;
       console.log(response.data)
-      console.log(this.ceos)
     })
     .catch(response => console.log(response));
-    
   }
 }
 </script>

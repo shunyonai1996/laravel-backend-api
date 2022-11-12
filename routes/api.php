@@ -20,7 +20,6 @@ use App\Http\Controllers\API\UserController;
 
 Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
 Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
-Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
 
 Route::apiResource('/ceo', (App\Http\Controllers\API\CEOController::class))->middleware('auth:api');
 
