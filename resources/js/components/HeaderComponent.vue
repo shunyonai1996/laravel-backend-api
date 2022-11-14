@@ -5,8 +5,9 @@
                 <span class="navbar-brand mb-0 h1">Vue Laravel SPA</span>
                 <button type="button" class="btn btn-danger" @click="doLogout">Logout</button>
                 <router-link to='/home'>ユーザ一覧</router-link>
+                <router-link to='/loading'>ロード</router-link>
                 <router-link to='/ceo'>会社一覧</router-link>
-                <router-link to='/post'>会社登録</router-link>
+                <router-link to='/post'>登録</router-link>
             </nav>
         </div>
     </div>

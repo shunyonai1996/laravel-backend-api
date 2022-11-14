@@ -5316,7 +5316,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      ceos: []
+      ceos: [],
+      show: true
     };
   },
   mounted: function mounted() {
@@ -5327,6 +5328,7 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (response) {
       return console.log(response);
     });
+    this.show = false;
   }
 });
 
@@ -5480,11 +5482,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      user: {}
+      user: {},
+      show: false
     };
   },
   methods: {
     doLogin: function doLogin() {
+      var self = this;
+      this.show = true;
       axios.post('api/login', {
         email: this.user.email,
         password: this.user.password
@@ -5492,7 +5497,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
         console.log(response.data.access_token);
         sessionStorage.setItem("access_token", response.data.access_token);
-        location.href = '/post';
+        location.href = '/ceo';
       })["catch"](function (error) {
         console.log(error);
       });
@@ -5518,9 +5523,9 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", _vm._l(_vm.ceos, function (ceo) {
+  return _c("div", [_vm.show ? _c("loading-component") : _vm._e(), _vm._v(" "), _vm._l(_vm.ceos, function (ceo) {
     return _c("ul", [_c("li", [_vm._v("CEO名：" + _vm._s(ceo.name))])]);
-  }), 0);
+  })], 2);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5726,13 +5731,17 @@ var render = function render() {
     }
   }, [_vm._v("ユーザ一覧")]), _vm._v(" "), _c("router-link", {
     attrs: {
+      to: "/loading"
+    }
+  }, [_vm._v("ロード")]), _vm._v(" "), _c("router-link", {
+    attrs: {
       to: "/ceo"
     }
   }, [_vm._v("会社一覧")]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: "/post"
     }
-  }, [_vm._v("会社登録")])], 1)])]);
+  }, [_vm._v("登録")])], 1)])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5790,7 +5799,6 @@ var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c("img", {
-    staticClass: "loading",
     attrs: {
       src: __webpack_require__(/*! ../../../image/loading.gif */ "./image/loading.gif")
     }
@@ -5868,7 +5876,7 @@ var render = function render() {
     attrs: {
       type: "submit"
     }
-  }, [_vm._v("Login")])]);
+  }, [_vm._v("Login")]), _vm._v(" "), _vm.show ? _c("loading-component") : _vm._e()], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;

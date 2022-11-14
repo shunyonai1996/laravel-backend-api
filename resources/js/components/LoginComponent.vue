@@ -5,6 +5,7 @@
       <label>Password</label>
       <input type="password" placeholder="password" v-model="user.password" />
       <button type="submit">Login</button>
+      <loading-component v-if="show"></loading-component>
   </form>
 </template>
 
@@ -12,11 +13,14 @@
 export default {
   data() {
     return {
-      user: {}
+      user: {},
+      show:false
     };
   },
   methods: {
     doLogin() {
+      let self = this;
+      this.show = true;
       axios.post('api/login', {
         email: this.user.email,
         password: this.user.password,
@@ -25,7 +29,7 @@ export default {
               console.log(response);
               console.log(response.data.access_token);
               sessionStorage.setItem("access_token", response.data.access_token);
-              location.href = '/post';
+              location.href = '/ceo';
          }).catch(function(error) {
               console.log(error);
          });

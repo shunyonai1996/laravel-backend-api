@@ -1,3 +1,3 @@
 <template>
-      <img src="../../../image/loading.gif" class="loading">
+      <img src="../../../image/loading.gif">
 </template>
