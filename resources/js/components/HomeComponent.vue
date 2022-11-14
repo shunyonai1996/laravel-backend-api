@@ -3,6 +3,18 @@
     <h1>{{ message }}</h1>
     <p v-for="user in users">{{ user.name }} / {{ user.email }}</p>
     <p v-show="errorFlag">サーバとの通信にエラーが発生しています</p>
+      <div>
+        <button v-on:click="show" class="button">show!</button>
+        <modal name="hello-world" :draggable="true" :resizable="true">
+          <div class="modal-header">
+            <h2>"vue-js-modal"ライブラリを使用</h2>
+          </div>
+          <div class="modal-body">
+            <p>you're reading this text in a modal!</p>
+            <button v-on:click="hide">閉じる</button>
+          </div>
+        </modal>
+      </div>
   </div> 
 </template>
 
@@ -27,6 +39,14 @@ export default {
       console.log(this.users)
     })
     .catch(response => console.log(response));
+  },
+  methods: {
+    show : function() {
+      this.$modal.show('hello-world');
+    },
+    hide : function () {
+      this.$modal.hide('hello-world');
+    },
   }
 }
 </script>

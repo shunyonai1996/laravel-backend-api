@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import VueRouter from 'vue-router';
+import VModal from 'vue-js-modal'
 import HeaderComponent from "./components/HeaderComponent";
 import LoginComponent from "./components/LoginComponent";
 import HomeComponent from "./components/HomeComponent";
@@ -41,6 +42,7 @@ Vue.component('loading-component', LoadingComponent);
  */
 
  Vue.use(VueRouter);
+ Vue.use(VModal);
  
  const router = new VueRouter({
      mode: 'history',
