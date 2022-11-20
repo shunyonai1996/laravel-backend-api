@@ -11,6 +11,7 @@ import HomeComponent from "./components/HomeComponent";
 import CeoComponent from "./components/CeoComponent";
 import CreateComponent from "./components/CreateComponent";
 import LoadingComponent from "./components/LoadingComponent";
+import NotificationComponent from "./components/NotificationComponent";
 
 require('./bootstrap');
 
@@ -33,6 +34,7 @@ Vue.component('login-component', LoginComponent);
 Vue.component('home-component', HomeComponent);
 Vue.component('ceo-component', CeoComponent);
 Vue.component('loading-component', LoadingComponent);
+Vue.component('notification-component', NotificationComponent);
 
 
 /**
@@ -71,6 +73,11 @@ Vue.component('loading-component', LoadingComponent);
             path: '/loading',
             name: 'loading',
             component: LoadingComponent,
+        },
+        {
+            path: '/notification',
+            name: 'notification',
+            component: NotificationComponent,
         },
      ]
  });

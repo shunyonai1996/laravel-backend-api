@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     doLogin() {
-      let self = this;
       this.show = true;
       axios.post('api/login', {
         email: this.user.email,
