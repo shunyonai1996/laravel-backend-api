@@ -5454,11 +5454,6 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
     axios.get('/api/user').then(function (response) {
       _this.users = response.data.users;
-      console.log(response.status);
-      console.log(response.headers);
-      console.log(response.statusText);
-      console.log(response.config);
-      console.log(response.data);
       console.log(_this.users);
     })["catch"](function (response) {
       return console.log(response);

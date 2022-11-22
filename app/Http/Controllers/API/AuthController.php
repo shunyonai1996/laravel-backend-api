@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Collection;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -13,7 +14,8 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:55',
             'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            'collection_id' => 'required',
         ]);
 
         $validatedData['password'] = bcrypt($request->password);
@@ -22,7 +24,7 @@ class AuthController extends Controller
 
         $accessToken = $user->createToken('authToken')->accessToken;
 
-        return response([ 'user' => $user, 'access_token' => $accessToken]);
+        return response(['user' => $user, 'access_token' => $accessToken]);
     }
 
     public function login(Request $request)

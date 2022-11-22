@@ -35,11 +35,14 @@ class NotificationController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'title' => 'required|max:255',
-            'discription' => 'required|max:255',
-            'end_date' => 'required',
             'start_date' => 'required',
-            'toggle_view' => 'required'
+            'end_date' => 'required',
+            'image' => 'required',
+            'already_read' => 'required',
+            'hide_next_time' => 'required',
+            'notify_priority' => 'required',
+            'group_id' => 'required',
+            'collection_id' => 'required',
         ]);
 
         if($validator->fails()){

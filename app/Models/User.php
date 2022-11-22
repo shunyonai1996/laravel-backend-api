@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'collection_id'
     ];
 
     /**
@@ -41,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function collection() {
+        return $this->belongsTo(Collection::class, 'collection_id', 'id');
+    }
+
+    public function notifications() {
+        return $this->belongsToMany(Noification::class);
+    }
 }

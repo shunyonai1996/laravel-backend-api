@@ -9,10 +9,15 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'discription', 'start_date', 'end_date', 'image', 'toggle_view'
+        'start_date', 'end_date', 'image', 'toggle_view'
     ];
 
-    public function reads() {
-        return $this->hasMany(Read::class, 'notification_id', 'id');
+    public function users() {
+        return $this->hasMany(User::class);
     }
+
+    public function collection() {
+        return $this->belongsToMany(Collection::class);
+    }
+    
 }

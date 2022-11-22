@@ -26,7 +26,8 @@ class DropColumnNotificationsColumn extends Migration
     public function down()
     {
         Schema::table('notifications', function (Blueprint $table) {
-            //
+            $table->createColumn(['title', 'discription', 'toggle_view']);
+            
         });
     }
 }
