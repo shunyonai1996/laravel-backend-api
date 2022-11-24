@@ -3,13 +3,11 @@
   <button v-on:click="show" class="button">モーダルを表示</button>
   <modal name="hello-world" :draggable="true" :resizable="true" v-show="notification">
     <div class="modal-header">
-      <h2>{{ notification.title }}</h2>
+      <img :src="imgSrc">
     </div>
     <div class="modal-body">
-      <p>{{ notification.discription }}</p>
-      <p>掲載期間：{{ notification.created_at }} 〜 {{ notification.end_date }}</p>
-      <input type="checkbox">{{ notification.toggle_view = 1 ? '次回から表示しない' : '' }}
-      <img :src="imgSrc">
+      <p>掲載期間：{{ notification[0].start_date }} 〜 {{ notification[0].end_date }}</p>
+      <input type="checkbox">{{ notification[0].hide_next_time == 0  ? '次回から表示しない' : '' }}
       <button v-on:click="hide">閉じる</button>
     </div>
   </modal>
@@ -20,7 +18,6 @@
 export default {
   data: function() {
     return {
-      message: "お知らせ機能のテスト",
       notification: [],
       errorFlag: false,
       view: true
@@ -37,16 +34,17 @@ export default {
     },
   },
   mounted() {
-    axios.get('/api/notification/5')
+    axios.get('/api/notification/')
     .then(response => {
-      this.notification = response.data.notification;
+      this.notification = response.data.notifications;
       console.log(this.notification)
     })
     .catch(response => console.log(response));
   },
   computed: {
     imgSrc () {
-      return ("../../../public/" + this.notification.image)
+      const img = `"../../../public/uploads/"${this.notification[0].image}`;
+      return img
     }
   }
 }

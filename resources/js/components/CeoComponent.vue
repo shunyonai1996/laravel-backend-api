@@ -1,6 +1,7 @@
 <template>
   <div>
     <loading-component v-if="show"></loading-component>
+    <notification-component></notification-component>
     <ul v-for="ceo in ceos">
       <li>CEO名：{{ ceo.name }}</li>
     </ul>
@@ -23,6 +24,14 @@ export default {
     })
     .catch(response => console.log(response));
     this.show = false;
+    
+    axios.get('/api/notification')
+    .then(response => {
+      this.notifications = response.data;
+      console.log(this.notifications);
+    })
+    .catch(response => console.log(response));
+    
   }
 }
 </script>

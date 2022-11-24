@@ -44,10 +44,10 @@ class User extends Authenticatable
     ];
 
     public function collection() {
-        return $this->belongsTo(Collection::class, 'collection_id', 'id');
+        return $this->belongsTo(Collection::class);
     }
 
     public function notifications() {
-        return $this->belongsToMany(Noification::class);
+        return $this->belongsToMany(Noification::class, 'notification_user', 'user_id', 'collection_id')->withPivot(['read', 'hide_next'])->withTimestamps();
     }
 }

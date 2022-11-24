@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Models\NotificationUser;
 use Illuminate\Http\Request;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Support\Facades\Validator;
@@ -20,8 +21,9 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::all();
+        $notificationuser = Notification::where('id', '12')->get();
 
-        return response([ 'notifications' => NotificationResource::collection($notifications), 'message' => 'Successfully'], 200);
+        return response([ 'notifications' => NotificationResource::collection($notifications), 'read' => $notificationuser, 'message' => 'Successfully'], 200);
     }
 
     /**

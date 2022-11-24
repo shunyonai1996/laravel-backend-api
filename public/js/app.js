@@ -5329,6 +5329,12 @@ __webpack_require__.r(__webpack_exports__);
       return console.log(response);
     });
     this.show = false;
+    axios.get('/api/notification').then(function (response) {
+      _this.notifications = response.data;
+      console.log(_this.notifications);
+    })["catch"](function (response) {
+      return console.log(response);
+    });
   }
 });
 
@@ -5516,7 +5522,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      message: "お知らせ機能のテスト",
       notification: [],
       errorFlag: false,
       view: true
@@ -5534,8 +5539,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     var _this = this;
-    axios.get('/api/notification/5').then(function (response) {
-      _this.notification = response.data.notification;
+    axios.get('/api/notification/').then(function (response) {
+      _this.notification = response.data.notifications;
       console.log(_this.notification);
     })["catch"](function (response) {
       return console.log(response);
@@ -5543,7 +5548,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     imgSrc: function imgSrc() {
-      return "../../../public/" + this.notification.image;
+      var img = "\"../../../public/uploads/\"".concat(this.notification[0].image);
+      return img;
     }
   }
 });
@@ -5565,7 +5571,7 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_vm.show ? _c("loading-component") : _vm._e(), _vm._v(" "), _vm._l(_vm.ceos, function (ceo) {
+  return _c("div", [_vm.show ? _c("loading-component") : _vm._e(), _vm._v(" "), _c("notification-component"), _vm._v(" "), _vm._l(_vm.ceos, function (ceo) {
     return _c("ul", [_c("li", [_vm._v("CEO名：" + _vm._s(ceo.name))])]);
   })], 2);
 };
@@ -5773,9 +5779,9 @@ var render = function render() {
     }
   }, [_vm._v("ユーザ一覧")]), _vm._v(" "), _c("router-link", {
     attrs: {
-      to: "/loading"
+      to: "/login"
     }
-  }, [_vm._v("ロード")]), _vm._v(" "), _c("router-link", {
+  }, [_vm._v("ログイン")]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: "/ceo"
     }
@@ -5960,17 +5966,17 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "modal-header"
-  }, [_c("h2", [_vm._v(_vm._s(_vm.notification.title))])]), _vm._v(" "), _c("div", {
-    staticClass: "modal-body"
-  }, [_c("p", [_vm._v(_vm._s(_vm.notification.discription))]), _vm._v(" "), _c("p", [_vm._v("掲載期間：" + _vm._s(_vm.notification.created_at) + " 〜 " + _vm._s(_vm.notification.end_date))]), _vm._v(" "), _c("input", {
-    attrs: {
-      type: "checkbox"
-    }
-  }), _vm._v(_vm._s(_vm.notification.toggle_view =  true ? "次回から表示しない" : 0) + "\n      "), _c("img", {
+  }, [_c("img", {
     attrs: {
       src: _vm.imgSrc
     }
-  }), _vm._v(" "), _c("button", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_c("p", [_vm._v("掲載期間：" + _vm._s(_vm.notification[0].start_date) + " 〜 " + _vm._s(_vm.notification[0].end_date))]), _vm._v(" "), _c("input", {
+    attrs: {
+      type: "checkbox"
+    }
+  }), _vm._v(_vm._s(_vm.notification[0].hide_next_time == 0 ? "次回から表示しない" : "") + "\n      "), _c("button", {
     on: {
       click: _vm.hide
     }

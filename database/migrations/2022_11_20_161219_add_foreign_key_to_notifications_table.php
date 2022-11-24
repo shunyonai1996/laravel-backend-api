@@ -13,6 +13,7 @@ class AddForeignKeyToNotificationsTable extends Migration
      */
     public function up()
     {
+        // Schema::rename('groups', 'collections');
         Schema::table('notifications', function (Blueprint $table) {
             $table->foreignId('collection_id')->constrained('collections')->cascadeOnUpdate()->cascadeOnDelete();
         });
@@ -27,6 +28,8 @@ class AddForeignKeyToNotificationsTable extends Migration
     {
         Schema::table('notifications', function (Blueprint $table) {
             $table->dropForeign('notifications_group_id_foreign');
+            $table->dropColumn('collection_id');
+
         });
     }
 }

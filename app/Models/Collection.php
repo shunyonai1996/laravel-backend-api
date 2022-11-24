@@ -14,10 +14,10 @@ class Collection extends Model
     ];
 
     public function users() {
-        return $this->hasmany(User::class, 'collection_id', 'id');
+        return $this->hasmany(User::class);
     }
 
     public function notifications() {
-        return $this->hasmany(Notification::class);
+        return $this->hasmany(Notification::class, 'collection_id', 'id');
     }
 }
