@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,10 @@ class Notification extends Model
     }
     
     public function users() {
-        return $this->belongsToMany(User::class, 'notification_user', 'collection_id', 'user_id')->withPivot(['read', 'hide_next'])->withTimestamps();
+        return $this->belongsToMany(User::class, 'notification_user', 'notification_id', 'user_id')->withPivot(['read', 'hide_next']);
     }
+
+
+    
     
 }
