@@ -5523,17 +5523,16 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       notification: [],
-      errorFlag: false,
-      view: true
+      errorFlag: false
     };
   },
   methods: {
     show: function show() {
-      this.$modal.show('hello-world');
+      this.$modal.show('modal-window');
       console.log(this.$modal.show);
     },
     hide: function hide() {
-      this.$modal.hide('hello-world');
+      this.$modal.hide('modal-window');
       console.log(this.$modal.hide);
     }
   },
@@ -5548,7 +5547,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     imgSrc: function imgSrc() {
-      var img = "\"../../../public/uploads/\"".concat(this.notification[0].image);
+      var img = "/uploads/" + this.notification[0].image;
       return img;
     }
   }
@@ -5947,7 +5946,7 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm.view ? _c("div", [_c("button", {
+  return _c("div", [_c("button", {
     staticClass: "button",
     on: {
       click: _vm.show
@@ -5960,7 +5959,7 @@ var render = function render() {
       expression: "notification"
     }],
     attrs: {
-      name: "hello-world",
+      name: "modal-window",
       draggable: true,
       resizable: true
     }
@@ -5980,7 +5979,7 @@ var render = function render() {
     on: {
       click: _vm.hide
     }
-  }, [_vm._v("閉じる")])])])], 1) : _vm._e();
+  }, [_vm._v("閉じる")])])])], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;

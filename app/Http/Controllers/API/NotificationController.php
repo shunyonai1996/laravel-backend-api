@@ -7,7 +7,7 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -20,7 +20,18 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::all();
-        $notification_user = Notification::find(12)->users()->get();
+        $notification_user = DB::table('notifications')
+            ->leftJoin('notification_user', 'notification_user.notification_id', "=", 'notifications.id')
+            ->where('read',  0)
+            ->where('hide_next',  0)
+            ->get();
+            
+            // select `users`.*, `notification_user`.`notification_id` as `pivot_notification_id`, `notification_user`.`user_id` as `pivot_user_id`, `notification_user`.`read` as `pivot_read`, `notification_user`.`hide_next` as `pivot_hide_next`
+            // from `users`
+            // inner join `notification_user` on `users`.`id` = `notification_user`.`user_id`
+            // where `notification_user`.`notification_id` = 12
+
+        // $notification_user = Notification::find(12)->users()->get();
 
         return response([ 'notifications' => NotificationResource::collection($notifications), 'read' => $notification_user, 'message' => 'Successfully'], 200);
     }
@@ -33,7 +44,7 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->all();        
 
         $validator = Validator::make($data, [
             'start_date' => 'required',
@@ -46,6 +57,7 @@ class NotificationController extends Controller
             'collection_id' => 'required',
         ]);
 
+        
         if($validator->fails()){
             return response(['error' => $validator->errors(), 'Validation Error']);
         }

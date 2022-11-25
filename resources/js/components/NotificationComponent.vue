@@ -1,7 +1,7 @@
 <template>
-<div v-if="view">
+<div>
   <button v-on:click="show" class="button">モーダルを表示</button>
-  <modal name="hello-world" :draggable="true" :resizable="true" v-show="notification">
+  <modal name='modal-window' :draggable="true" :resizable="true" v-show="notification">
     <div class="modal-header">
       <img :src="imgSrc">
     </div>
@@ -20,16 +20,15 @@ export default {
     return {
       notification: [],
       errorFlag: false,
-      view: true
     }
   },
   methods: {
     show : function() {
-      this.$modal.show('hello-world');
+      this.$modal.show('modal-window');
       console.log(this.$modal.show);
     },
     hide : function () {
-      this.$modal.hide('hello-world');
+      this.$modal.hide('modal-window');
       console.log(this.$modal.hide);
     },
   },
@@ -43,8 +42,8 @@ export default {
   },
   computed: {
     imgSrc () {
-      const img = `"../../../public/uploads/"${this.notification[0].image}`;
-      return img
+      const img = "/uploads/" + this.notification[0].image;
+      return img;
     }
   }
 }
