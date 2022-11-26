@@ -11,6 +11,8 @@ use App\Http\Controllers\API\NotificationController;
 Route::post('/collection', [App\Http\Controllers\API\CollectionController::class, 'store']);
 
 Route::get('/user', [App\Http\Controllers\API\UserController::class, 'index']);
+Route::post('/notify', [App\Http\Controllers\API\UserController::class, 'notify']);
+
 Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
 Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
