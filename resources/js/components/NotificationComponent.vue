@@ -1,13 +1,13 @@
 <template>
 <div>
   <button v-on:click="show" class="button">モーダルを表示</button>
-  <modal name='modal-window' :draggable="true" :resizable="true" v-show="notification">
+  <modal name='modal-window' :draggable="true" :resizable="true" v-for="notification in notifications">
     <div class="modal-header">
       <img :src="imgSrc">
     </div>
     <div class="modal-body">
-      <p>掲載期間：{{ notification[0].start_date }} 〜 {{ notification[0].end_date }}</p>
-      <input type="checkbox">{{ notification[0].hide_next_time == 0  ? '次回から表示しない' : '' }}
+      <p>掲載期間：{{ notification.start_date }} 〜 {{ notification.end_date }}</p>
+      <input type="checkbox">{{ notification.hide_next_time == 0  ? '次回から表示しない' : '' }}
       <button v-on:click="hide">閉じる</button>
     </div>
   </modal>
@@ -18,7 +18,7 @@
 export default {
   data: function() {
     return {
-      notification: [],
+      notifications: [],
       errorFlag: false,
     }
   },
@@ -35,15 +35,19 @@ export default {
   mounted() {
     axios.get('/api/notification/')
     .then(response => {
-      this.notification = response.data.notifications;
-      console.log(this.notification)
+      this.notifications = response.data.notifications;
+      console.log(this.notifications)
     })
     .catch(response => console.log(response));
   },
   computed: {
-    imgSrc () {
-      const img = "/uploads/" + this.notification[0].image;
-      return img;
+    imgSrc: function() {
+      for(let i=0; i<3; i++){
+        const img = `/uploads/${this.notifications[i].image}`;
+        console.log(img);
+        return img;
+      }
+        
     }
   }
 }

@@ -8,14 +8,16 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\NotificationController;
 
-Route::post('/collection', [App\Http\Controllers\API\CollectionController::class, 'store']);
+Route::post('/collection', [CollectionController::class, 'store']);
 
-Route::get('/user', [App\Http\Controllers\API\UserController::class, 'index']);
-Route::post('/notify', [App\Http\Controllers\API\UserController::class, 'notify']);
+Route::get('/user', [UserController::class, 'index']);
 
-Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
-Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::apiResource('/ceo', (App\Http\Controllers\API\CEOController::class))->middleware('auth:api');
-Route::apiResource('/notification', (App\Http\Controllers\API\NotificationController::class))->middleware('auth:api');
+Route::apiResource('/ceo', (CEOController::class))->middleware('auth:api');
+
+Route::apiResource('/notification', (NotificationController::class))->middleware('auth:api');
+
+Route::get('/notify', [NotificationController::class, 'notify'])->middleware('auth:api');

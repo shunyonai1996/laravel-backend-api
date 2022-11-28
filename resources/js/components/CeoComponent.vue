@@ -24,14 +24,6 @@ export default {
     })
     .catch(response => console.log(response));
     this.show = false;
-    
-    axios.get('/api/notification')
-    .then(response => {
-      this.notifications = response.data;
-      console.log(this.notifications);
-    })
-    .catch(response => console.log(response));
-    
   }
 }
 </script>

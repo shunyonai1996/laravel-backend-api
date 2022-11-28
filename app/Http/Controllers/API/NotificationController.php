@@ -3,25 +3,41 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificatoinController;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
     public function notify(Request $request) {
-        
-        $notifys = Notification::all();
-        
-        if($notifys->fails()){
-            return response(['Nothing notify']);
+        $model = new Notification();
+        //全て認証ユーザの取得方法
+        $auth_user = Auth::user(); //Authファザード
+        $helper_user = auth()->user(); //helper
+        $http_req = $request->user(); //Illuminate\Http\Requestインスタンスを返す
+        $notify_skip = DB::table('users')
+            ->leftJoin('notification_user', 'notification_user.user_id', "=", 'users.id')
+            ->where('user_id', $auth_user->id)
+            ->where(function ($query) {
+                $query->where('read', 1)
+                      ->orWhere('hide_next', 1);
+            });
+
+        //ログインチェックが通ればレスポンスを返す
+        if(Auth::check()) {
+            if($notify_skip->exists()) {
+                return response([ 'message' => 'POPUP非表示!!!'], 200);
+            } else {
+                return response([ 'notifys' => $model->all(), 'message' => 'POPUP表示!!!'], 200);
+            }
+        } else {
+            return response( 'ログインしてください!!' );
         }
-
-        $ceo = CEO::create($data);
-
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Created successfully'], 200);
     }
 
     /**
