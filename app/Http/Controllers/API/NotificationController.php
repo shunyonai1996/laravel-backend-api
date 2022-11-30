@@ -20,21 +20,24 @@ class NotificationController extends Controller
         $auth_user = Auth::user(); //Authファザード
         $helper_user = auth()->user(); //helper
         $http_req = $request->user(); //Illuminate\Http\Requestインスタンスを返す
-        $notify_skip = DB::table('users')
+        
+        $check_notify_user = DB::table('users')
             ->leftJoin('notification_user', 'notification_user.user_id', "=", 'users.id')
-            ->where('user_id', $auth_user->id)
-            ->where(function ($query) {
-                $query->where('read', 1)
-                      ->orWhere('hide_next', 1);
-            });
+            ->rightJoin('notifications', 'notifications.id', "=", 'notification_user.notification_id')
+            ->where('users.id', "=", null)
+            ->orWhereNotIn('users.id', [$auth_user->id]);
+            // ->where(function ($query) {
+            //     $query->where('read', "=", null)
+            //           ->orWhere('hide_next', "=", null);
+            // });
+            // ->where('users.id', $auth_user->id);
 
-        //ログインチェックが通ればレスポンスを返す
+        $notify_collections = DB::table('notifications')
+            ->leftJoin('notification_user', 'notification_user.notification_id', 'notifications.id')
+            ->where('notifications.id', $check_notify_user);
+         
         if(Auth::check()) {
-            if($notify_skip->exists()) {
-                return response([ 'message' => 'POPUP非表示!!!'], 200);
-            } else {
-                return response([ 'notifys' => $model->all(), 'message' => 'POPUP表示!!!'], 200);
-            }
+                return response([ 'notifys' => $model->all(), 'SQL' => $check_notify_user->get(), 'message' => 'POPUP表示!!!'], 200);
         } else {
             return response( 'ログインしてください!!' );
         }
@@ -53,12 +56,6 @@ class NotificationController extends Controller
             ->where('read',  0)
             ->where('hide_next',  0)
             ->get();
-
-        // {"sql":"select `users`.*, `notification_user`.`notification_id` as `pivot_notification_id`, `notification_user`.`user_id` as `pivot_user_id`, `notification_user`.`read` as `pivot_read`, `notification_user`.`hide_next` as `pivot_hide_next` from `users` inner join `notification_user` on `users`.`id` = `notification_user`.`user_id` where `notification_user`.`notification_id` = 15","time":"0.29 ms"} 
-            
-        // $notification_user = Notification::find(15)->users()->get();
-
-        // {"sql":"select `users`.*, `notification_user`.`notification_id` as `pivot_notification_id`, `notification_user`.`user_id` as `pivot_user_id`, `notification_user`.`read` as `pivot_read`, `notification_user`.`hide_next` as `pivot_hide_next` from `users` inner join `notification_user` on `users`.`id` = `notification_user`.`user_id` where `notification_user`.`notification_id` = 15","time":"0.65 ms"} 
 
         return response([ 'notifications' => NotificationResource::collection($notifications), 'read' => $notification_user, 'message' => 'Successfully'], 200);
     }

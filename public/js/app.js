@@ -5584,7 +5584,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
     axios.get('/api/notify').then(function (response) {
       _this.notifys = response.data.notifys;
-      console.log(_this.notifys);
+      console.log(response.data);
     })["catch"](function (response) {
       return console.log(response);
     });
