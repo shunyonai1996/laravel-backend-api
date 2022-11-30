@@ -18,26 +18,31 @@ class NotificationController extends Controller
         $model = new Notification();
         //全て認証ユーザの取得方法
         $auth_user = Auth::user(); //Authファザード
-        $helper_user = auth()->user(); //helper
-        $http_req = $request->user(); //Illuminate\Http\Requestインスタンスを返す
-        
-        $check_notify_user = DB::table('users')
-            ->leftJoin('notification_user', 'notification_user.user_id', "=", 'users.id')
-            ->rightJoin('notifications', 'notifications.id', "=", 'notification_user.notification_id')
-            ->where('users.id', "=", null)
-            ->orWhereNotIn('users.id', [$auth_user->id]);
-            // ->where(function ($query) {
-            //     $query->where('read', "=", null)
-            //           ->orWhere('hide_next', "=", null);
-            // });
-            // ->where('users.id', $auth_user->id);
+        // $helper_user = auth()->user(); //helper
+        // $http_req = $request->user(); //Illuminate\Http\Requestインスタンスを返す
 
-        $notify_collections = DB::table('notifications')
-            ->leftJoin('notification_user', 'notification_user.notification_id', 'notifications.id')
-            ->where('notifications.id', $check_notify_user);
+        $check_notify_user = DB::table('notifications')
+            ->leftJoin('notification_user', function ($join) {
+                $join->on('notifications.id', "=", 'notification_user.notification_id')
+                ->where('user_id', "=", auth()->user()->id);
+            })
+            ->where('user_id', null);
+
+        // $users = User::where(function ($query) {
+        //     $query->select('type')
+        //         ->from('membership')
+        //         ->whereColumn('membership.user_id', 'users.id')
+        //         ->orderByDesc('membership.start_date')
+        //         ->limit(1);
+        // }, 'Pro')->get();
+
+        
+        // $notify_collections = DB::table('notifications')
+        //     ->leftJoin('notification_user', 'notification_user.notification_id', 'notifications.id')
+        //     ->where('notifications.id', $check_notify_user);
          
         if(Auth::check()) {
-                return response([ 'notifys' => $model->all(), 'SQL' => $check_notify_user->get(), 'message' => 'POPUP表示!!!'], 200);
+                return response([ 'notifys' => $check_notify_user->get(), 'message' => 'POPUP表示!!!'], 200);
         } else {
             return response( 'ログインしてください!!' );
         }

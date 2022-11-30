@@ -5588,15 +5588,6 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (response) {
       return console.log(response);
     });
-  },
-  computed: {
-    imgSrc: function imgSrc() {
-      for (var i = 0; i < 3; i++) {
-        var img = "/uploads/".concat(this.notifys[i].image);
-        console.log(img);
-        return img;
-      }
-    }
   }
 });
 
@@ -6059,11 +6050,11 @@ var render = function render() {
       }
     }, [_c("div", {
       staticClass: "modal-header"
-    }, [_c("img", {
+    }, [_vm._v("\n      `"), _c("img", {
       attrs: {
-        src: _vm.imgSrc
+        src: "/uploads/" + notify.image
       }
-    })]), _vm._v(" "), _c("div", {
+    }), _vm._v("`\n    ")]), _vm._v(" "), _c("div", {
       staticClass: "modal-body"
     }, [_c("p", [_vm._v("掲載期間：" + _vm._s(notify.start_date) + " 〜 " + _vm._s(notify.end_date))]), _vm._v(" "), _vm.checked ? _c("input", {
       attrs: {
