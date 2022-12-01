@@ -5567,7 +5567,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       notifys: [],
-      checked: false
+      value: '次回から表示しない',
+      loading: true
     };
   },
   methods: {
@@ -5585,6 +5586,7 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/api/notify').then(function (response) {
       _this.notifys = response.data.notifys;
       console.log(response.data);
+      _this.loading = false;
     })["catch"](function (response) {
       return console.log(response);
     });
@@ -6036,7 +6038,7 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("button", {
+  return _c("div", [_vm.loading ? _c("loading-component") : _vm._e(), _vm._v(" "), _c("button", {
     staticClass: "button",
     on: {
       click: _vm.show
@@ -6052,15 +6054,44 @@ var render = function render() {
       staticClass: "modal-header"
     }, [_vm._v("\n      `"), _c("img", {
       attrs: {
-        src: "/uploads/" + notify.image
+        src: "/uploads/".concat(notify.image)
       }
     }), _vm._v("`\n    ")]), _vm._v(" "), _c("div", {
       staticClass: "modal-body"
-    }, [_c("p", [_vm._v("掲載期間：" + _vm._s(notify.start_date) + " 〜 " + _vm._s(notify.end_date))]), _vm._v(" "), _vm.checked ? _c("input", {
+    }, [_c("p", [_vm._v("掲載期間：" + _vm._s(notify.start_date) + " 〜 " + _vm._s(notify.end_date))]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: _vm.value,
+        expression: "value"
+      }],
       attrs: {
-        type: "checkbox"
+        type: "checkbox",
+        "true-value": "次回から表示しない",
+        "false-value": "次回も表示"
+      },
+      domProps: {
+        checked: Array.isArray(_vm.value) ? _vm._i(_vm.value, null) > -1 : _vm._q(_vm.value, "次回から表示しない")
+      },
+      on: {
+        change: function change($event) {
+          var $$a = _vm.value,
+            $$el = $event.target,
+            $$c = $$el.checked ? "次回から表示しない" : "次回も表示";
+          if (Array.isArray($$a)) {
+            var $$v = null,
+              $$i = _vm._i($$a, $$v);
+            if ($$el.checked) {
+              $$i < 0 && (_vm.value = $$a.concat([$$v]));
+            } else {
+              $$i > -1 && (_vm.value = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            }
+          } else {
+            _vm.value = $$c;
+          }
+        }
       }
-    }) : _vm._e(), _vm._v(_vm._s(notify.hide_next_time == 0 ? "次回から表示しない" : "") + "\n      "), _c("button", {
+    }), _vm._v(_vm._s(notify.hide_next_time == 1 ? "次回から表示しない" : "") + "\n      "), _c("button", {
       on: {
         click: _vm.hide
       }
