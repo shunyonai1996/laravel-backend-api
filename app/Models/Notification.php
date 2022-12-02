@@ -12,7 +12,9 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'start_date', 'end_date', 'image', 'toggle_view'
+        'start_date',
+        'end_date',
+        'image'
     ];
 
     public function collection() {

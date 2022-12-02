@@ -21,13 +21,30 @@ class NotificationController extends Controller
         // $helper_user = auth()->user(); //helper
         // $http_req = $request->user(); //Illuminate\Http\Requestインスタンスを返す
 
-        $check_notify_user = DB::table('notifications')
-            ->leftJoin('notification_user', function ($join) {
-                $join->on('notifications.id', "=", 'notification_user.notification_id')
-                ->where('user_id', "=", auth()->user()->id);
+        $check_notify_user = DB::table('notifications as n')
+            ->select( 'n.id as id',
+                      'n.image as image',
+                      'n.already_read as already_read', 
+                      'n.hide_next_time as hide_next_time', 
+                      'n.jump_link as jump_link', 
+                      'n.notify_priority as notify_priority', 
+                      'nu.read as read',
+                      'nu.hide_next as hide_next' )
+            ->leftJoin('notification_user as nu', function ($join) {
+                $join->on('n.id', "=", 'nu.notification_id')
+                     ->where('nu.user_id', "=", auth()->user()->id);
             })
-            ->where('user_id', null);
+            ->where('nu.user_id', null)
+            ->orderBy('n.notify_priority')
+            ->orderBy('n.id')
+            ->get();
 
+    //         $customers = Customer::from('customers as c')
+    // ->select('c.name as customer_name',
+    //        'e.address as mail_address')
+    // ->leftJoin('emails as e', 'c.id', '=', 'e.customer_id')
+    // ->get();
+            
         // $users = User::where(function ($query) {
         //     $query->select('type')
         //         ->from('membership')
@@ -42,7 +59,7 @@ class NotificationController extends Controller
         //     ->where('notifications.id', $check_notify_user);
          
         if(Auth::check()) {
-                return response([ 'notifys' => $check_notify_user->get(), 'message' => 'POPUP表示!!!'], 200);
+                return response([ 'notifys' => $check_notify_user, 'message' => 'POPUP表示!!!'], 200);
         } else {
             return response( 'ログインしてください!!' );
         }
@@ -58,8 +75,8 @@ class NotificationController extends Controller
         $notifications = Notification::all();
         $notification_user = DB::table('notifications')
             ->leftJoin('notification_user', 'notification_user.notification_id', "=", 'notifications.id')
-            ->where('read',  0)
-            ->where('hide_next',  0)
+            ->where('read', 0)
+            ->where('hide_next', 0)
             ->get();
 
         return response([ 'notifications' => NotificationResource::collection($notifications), 'read' => $notification_user, 'message' => 'Successfully'], 200);

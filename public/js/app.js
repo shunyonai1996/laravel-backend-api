@@ -5567,8 +5567,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       notifys: [],
-      value: '次回から表示しない',
-      loading: true
+      hide_next_time: '次回から表示しない',
+      already_read: '次回から表示しない',
+      loading: true,
+      a: 0,
+      b: 1
     };
   },
   methods: {
@@ -5579,6 +5582,14 @@ __webpack_require__.r(__webpack_exports__);
     hide: function hide() {
       this.$modal.hide('modal-window');
       console.log(this.$modal.hide);
+    },
+    nextPopup: function nextPopup() {
+      if (this.a < this.notifys.length) {
+        this.a++;
+        this.b++;
+      } else {
+        this.hide;
+      }
     }
   },
   mounted: function mounted() {
@@ -5586,6 +5597,7 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/api/notify').then(function (response) {
       _this.notifys = response.data.notifys;
       console.log(response.data);
+      console.log(response.data.notifys);
       _this.loading = false;
     })["catch"](function (response) {
       return console.log(response);
@@ -6043,57 +6055,92 @@ var render = function render() {
     on: {
       click: _vm.show
     }
-  }, [_vm._v("モーダルを表示")]), _vm._v(" "), _vm._l(_vm.notifys, function (notify) {
+  }, [_vm._v("モーダルを表示")]), _vm._v(" "), _vm._l(_vm.notifys.slice(_vm.a, _vm.b), function (notify, index) {
     return _c("modal", {
+      key: index,
       attrs: {
         name: "modal-window",
+        reset: true,
+        trandition: false,
+        scrollable: true,
         draggable: true,
         resizable: true
       }
     }, [_c("div", {
       staticClass: "modal-header"
-    }, [_vm._v("\n      `"), _c("img", {
+    }, [_c("img", {
       attrs: {
         src: "/uploads/".concat(notify.image)
       }
-    }), _vm._v("`\n    ")]), _vm._v(" "), _c("div", {
+    })]), _vm._v(" "), _c("div", {
       staticClass: "modal-body"
-    }, [_c("p", [_vm._v("掲載期間：" + _vm._s(notify.start_date) + " 〜 " + _vm._s(notify.end_date))]), _vm._v(" "), _c("input", {
+    }, [notify.hide_next_time === 1 ? _c("div", [_c("span", [_vm._v("次回から表示しない")]), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
-        value: _vm.value,
-        expression: "value"
+        value: notify.hide_next_time,
+        expression: "notify.hide_next_time"
       }],
       attrs: {
         type: "checkbox",
-        "true-value": "次回から表示しない",
-        "false-value": "次回も表示"
+        "true-hide_next_time": "次回から表示しない",
+        "false-hide_next_time": "次回も表示"
       },
       domProps: {
-        checked: Array.isArray(_vm.value) ? _vm._i(_vm.value, null) > -1 : _vm._q(_vm.value, "次回から表示しない")
+        checked: Array.isArray(notify.hide_next_time) ? _vm._i(notify.hide_next_time, null) > -1 : notify.hide_next_time
       },
       on: {
         change: function change($event) {
-          var $$a = _vm.value,
+          var $$a = notify.hide_next_time,
             $$el = $event.target,
-            $$c = $$el.checked ? "次回から表示しない" : "次回も表示";
+            $$c = $$el.checked ? true : false;
           if (Array.isArray($$a)) {
             var $$v = null,
               $$i = _vm._i($$a, $$v);
             if ($$el.checked) {
-              $$i < 0 && (_vm.value = $$a.concat([$$v]));
+              $$i < 0 && _vm.$set(notify, "hide_next_time", $$a.concat([$$v]));
             } else {
-              $$i > -1 && (_vm.value = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+              $$i > -1 && _vm.$set(notify, "hide_next_time", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
             }
           } else {
-            _vm.value = $$c;
+            _vm.$set(notify, "hide_next_time", $$c);
           }
         }
       }
-    }), _vm._v(_vm._s(notify.hide_next_time == 1 ? "次回から表示しない" : "") + "\n      "), _c("button", {
+    })]) : notify.already_read === 1 ? _c("div", [_c("span", [_vm._v("読みました")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: notify.already_read,
+        expression: "notify.already_read"
+      }],
+      attrs: {
+        type: "checkbox"
+      },
+      domProps: {
+        checked: Array.isArray(notify.already_read) ? _vm._i(notify.already_read, null) > -1 : notify.already_read
+      },
       on: {
-        click: _vm.hide
+        change: function change($event) {
+          var $$a = notify.already_read,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+          if (Array.isArray($$a)) {
+            var $$v = null,
+              $$i = _vm._i($$a, $$v);
+            if ($$el.checked) {
+              $$i < 0 && _vm.$set(notify, "already_read", $$a.concat([$$v]));
+            } else {
+              $$i > -1 && _vm.$set(notify, "already_read", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+            }
+          } else {
+            _vm.$set(notify, "already_read", $$c);
+          }
+        }
+      }
+    })]) : _c("div", [_c("p", [_vm._v("メンテナンス系")])]), _vm._v(" "), _c("button", {
+      on: {
+        click: _vm.nextPopup
       }
     }, [_vm._v("閉じる")])])]);
   })], 2);
@@ -6128,6 +6175,7 @@ __webpack_require__.r(__webpack_exports__);
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
 
 
 
@@ -6201,7 +6249,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_9__["default"]({
     component: _components_NotifyComponent__WEBPACK_IMPORTED_MODULE_8__["default"]
   }]
 });
-var app = new Vue({
+new Vue({
   el: '#app',
   router: router
 });
