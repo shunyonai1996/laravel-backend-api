@@ -13,7 +13,6 @@ import CeoComponent from "./components/CeoComponent";
 import CreateComponent from "./components/CreateComponent";
 import LoadingComponent from "./components/LoadingComponent";
 import NotificationComponent from "./components/NotificationComponent";
-import NotifyComponent from "./components/NotifyComponent";
 
 require('./bootstrap');
 
@@ -37,7 +36,6 @@ Vue.component('home-component', HomeComponent);
 Vue.component('ceo-component', CeoComponent);
 Vue.component('loading-component', LoadingComponent);
 Vue.component('notification-component', NotificationComponent);
-Vue.component('notify-component', NotifyComponent);
 
 
 /**
@@ -81,11 +79,6 @@ Vue.component('notify-component', NotifyComponent);
             path: '/notification',
             name: 'notification',
             component: NotificationComponent,
-        },
-        {
-            path: '/notify',
-            name: 'notify',
-            component: NotifyComponent,
         },
      ]
  });
