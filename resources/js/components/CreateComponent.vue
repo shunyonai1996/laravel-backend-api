@@ -44,10 +44,8 @@ export default {
       })
       console.log(self.show)
       self.show = false
-      console.log(self.show)
       this.$router.push(this.$route.query.redirect);
     }
   },
-
 }
 </script>

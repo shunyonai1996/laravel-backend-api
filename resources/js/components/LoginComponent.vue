@@ -18,7 +18,7 @@ export default {
     };
   },
   methods: {
-    doLogin() {
+    doLogin: function() {
       this.show = true;
       axios.post('api/login', {
         email: this.user.email,

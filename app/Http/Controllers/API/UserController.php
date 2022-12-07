@@ -14,6 +14,15 @@ class UserController extends Controller
 {
     public function index() {
         $users = USER::all();
-        return response([ 'users' => $users,'message' => 'Retrieved successfully'], 200);
+        return response([ 'users' => $users, 'message' => 'Retrieved successfully'], 200);
+    }
+
+    public function hidepopup(Request $request)
+    {
+        $data = $request->all();
+
+        $hidepopup = NotificationUser::create($data);
+
+        return response([ 'hidepopup' => $hidepopup, 'message' => 'Created successfully'], 200);
     }
 }
