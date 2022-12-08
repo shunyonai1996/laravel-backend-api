@@ -27,8 +27,10 @@ class NotificationController extends Controller
                       'nu.hide_next as hide_next' )
             ->leftJoin('notification_user as nu', function ($join) {
                 $join->on('n.id', "=", 'nu.notification_id')
-                     ->where('nu.user_id', "=", auth()->user()->id);
+                ->where('nu.user_id', "=", auth()->user()->id);
             })
+            ->where('start_date', "<=", date("Y-m-d H:i:s"))
+            ->where('end_date', ">=", date("Y-m-d H:i:s"))
             ->where('nu.user_id', null)
             ->orderBy('n.notify_priority')
             ->orderBy('n.id')
