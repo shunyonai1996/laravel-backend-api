@@ -8,7 +8,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\NotificationController;
 
-Route::post('/collection', [CollectionController::class, 'store']);
+Route::apiResource('/collection', CollectionController::class);
 
 Route::get('/user', [UserController::class, 'index']);
 Route::post('/hidepopup', [UserController::class, 'hidepopup'])->middleware('auth:api');
