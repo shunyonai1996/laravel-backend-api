@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\User;
+use App\Models\NotificationUser;
 use Illuminate\Http\Request;
 use App\Http\Resources\NotificationResource;
 use Illuminate\Support\Facades\Validator;
@@ -13,31 +14,15 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    public function notify(Request $request) {
-        $model = new Notification();
-        $auth_user = Auth::user();
-        $check_notify_user = DB::table('notifications as n')
-            ->select( 'n.id as id',
-                      'n.image as image',
-                      'n.already_read as already_read', 
-                      'n.hide_next_time as hide_next_time', 
-                      'n.jump_link as jump_link', 
-                      'n.notify_priority as notify_priority',
-                      'nu.read as read',
-                      'nu.hide_next as hide_next' )
-            ->leftJoin('notification_user as nu', function ($join) {
-                $join->on('n.id', "=", 'nu.notification_id')
-                     ->where('nu.user_id', "=", auth()->user()->id);
-            })
-            ->where('nu.user_id', null)
-            ->orderBy('n.notify_priority')
-            ->orderBy('n.id')
-            ->get();
+    public function notify() {
+        $notification = new NotificationUser();
+        $notify_user = $notification->check_notify_user();
+        $auth_user = $notification->auth_user();
          
         if(Auth::check()) {
-                return response([ 'notifies' => $check_notify_user, 'user_id' => $auth_user->id , 'message' => 'POPUP表示!!!'], 200);
+                return response([ 'notifies' => $notify_user, 'user_id' => $auth_user, 'message' => 'POPUP表示!!!'], 200);
         } else {
-            return response( 'ログインしてください!!' );
+            return response( '未認証' );
         }
     }
 
@@ -48,14 +33,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notification::all();
-        $notification_user = DB::table('notifications')
-            ->leftJoin('notification_user', 'notification_user.notification_id', "=", 'notifications.id')
-            ->where('read', 0)
-            ->where('hide_next', 0)
-            ->get();
-
-        return response([ 'notifications' => NotificationResource::collection($notifications), 'read' => $notification_user, 'message' => 'Successfully'], 200);
+        //
     }
 
     /**

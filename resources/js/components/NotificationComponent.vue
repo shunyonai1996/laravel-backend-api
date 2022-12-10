@@ -84,7 +84,6 @@ export default {
       await axios.get('/api/notify')
       .then(response => {
         this.notifies = response.data.notifies;
-        // this.notification_id = response.data.notifies;
         this.user_id = response.data.user_id;
         console.log(this.notifies);
         console.log(this.notifies[this.i].id);

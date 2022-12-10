@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+
 class Notification extends Model
 {
     use HasFactory;
@@ -22,4 +24,5 @@ class Notification extends Model
     public function users() {
         return $this->belongsToMany(User::class, 'notification_user')->withPivot(['read', 'hide_next'])->using(NotificationUser::class);
     }
+
 }

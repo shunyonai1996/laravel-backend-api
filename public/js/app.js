@@ -5619,7 +5619,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _context2.next = 4;
               return axios.get('/api/notify').then(function (response) {
                 _this.notifies = response.data.notifies;
-                // this.notification_id = response.data.notifies;
                 _this.user_id = response.data.user_id;
                 console.log(_this.notifies);
                 console.log(_this.notifies[_this.i].id);
