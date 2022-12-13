@@ -24,7 +24,6 @@
       <button @click="hidePopup(); nextPopup();">閉じる</button>
 
       </div>
-
     </modal>
   </div>
 </template>
@@ -41,7 +40,7 @@ export default {
       a: 0,
       b: 1,
       i: 0,
-      load: false,
+      load: true,
     }
   },
   methods: {
@@ -79,12 +78,13 @@ export default {
     },
   },
   async created() {
+    // this.load = true;
     if(sessionStorage.getItem('read') === null) {
-      this.load = true;
       await axios.get('/api/notify')
       .then(response => {
         this.notifies = response.data.notifies;
         this.user_id = response.data.user_id;
+        console.log(response.data);
         console.log(this.notifies);
         console.log(this.notifies[this.i].id);
         console.log(this.user_id);
@@ -92,6 +92,8 @@ export default {
       })
       .catch(response => console.log(response));
       this.show();
+      this.load = false;
+    } else {
       this.load = false;
     }
   }
