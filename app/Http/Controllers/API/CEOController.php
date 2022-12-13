@@ -1,4 +1,10 @@
 <?php
+/**
+ * CEO情報を登録、表示、削除するための指令を行う
+ * 
+ * @version 1.0
+ * @author 米内
+ */
 
 namespace App\Http\Controllers\API;
 
@@ -12,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 class CEOController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 全てのCEO情報を取得
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,7 +29,7 @@ class CEOController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * CEO情報登録
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -49,7 +55,7 @@ class CEOController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * CEO詳細情報を取得
      *
      * @param  \App\Models\CEO  $ceo
      * @return \Illuminate\Http\Response
@@ -60,7 +66,7 @@ class CEOController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * CEO情報を更新
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\CEO  $ceo
@@ -74,7 +80,7 @@ class CEOController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * CEO情報を削除
      *
      * @param  \App\Models\CEO  $ceo
      * @return \Illuminate\Http\Response

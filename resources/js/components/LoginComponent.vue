@@ -28,7 +28,7 @@ export default {
               console.log(response);
               console.log(response.data.access_token);
               sessionStorage.setItem("access_token", response.data.access_token);
-              location.href = '/ceo';
+              location.href = '/notifications';
          }).catch(function(error) {
               console.log(error);
          });

@@ -5511,7 +5511,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
         console.log(response.data.access_token);
         sessionStorage.setItem("access_token", response.data.access_token);
-        location.href = '/ceo';
+        location.href = '/notifications';
       })["catch"](function (error) {
         console.log(error);
       });
@@ -5547,7 +5547,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       a: 0,
       b: 1,
       i: 0,
-      load: false
+      load: true
     };
   },
   methods: {
@@ -5612,14 +5612,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context2.prev = _context2.next) {
             case 0:
               if (!(sessionStorage.getItem('read') === null)) {
-                _context2.next = 6;
+                _context2.next = 7;
                 break;
               }
-              _this.load = true;
-              _context2.next = 4;
+              _context2.next = 3;
               return axios.get('/api/notify').then(function (response) {
                 _this.notifies = response.data.notifies;
                 _this.user_id = response.data.user_id;
+                console.log(response.data);
                 console.log(_this.notifies);
                 console.log(_this.notifies[_this.i].id);
                 console.log(_this.user_id);
@@ -5627,10 +5627,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               })["catch"](function (response) {
                 return console.log(response);
               });
-            case 4:
+            case 3:
               _this.show();
               _this.load = false;
-            case 6:
+              _context2.next = 8;
+              break;
+            case 7:
+              _this.load = false;
+            case 8:
             case "end":
               return _context2.stop();
           }
