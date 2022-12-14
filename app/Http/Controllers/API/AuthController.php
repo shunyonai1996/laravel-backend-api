@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ユーザー登録・accessToken発行、ログイン、ログアウト
  * 
@@ -10,9 +11,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Collection;
-use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -21,7 +21,7 @@ class AuthController extends Controller
      * 認証用のaccessTokenを発行
      * 
      * @param \Illuminate\Http\Request
-     * @return string|string 
+     * @return string|string
      */
     public function register(Request $request)
     {
@@ -43,7 +43,7 @@ class AuthController extends Controller
 
     /**
      * ログイン認証処理
-     * SessionStrageにaccessTokenを保存
+     * ログイン時にaccessTokenを発行
      * 
      * @param \Illuminate\Http\Request
      * @return string|mixed 認証情報の保存、ログインユーザー情報のレスポンス
@@ -59,7 +59,9 @@ class AuthController extends Controller
             return response(['message' => 'Invalid Credentials']);
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        /** @var \App\Models\User $user **/
+        $user = Auth::user();
+        $accessToken = $user->createToken('authToken')->accessToken;
 
         return response(['user' => auth()->user(), 'access_token' => $accessToken]);
     }
@@ -75,7 +77,7 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
         return response()->json([
-        'message' => 'Successfully logged out'
+            'message' => 'Successfully logged out'
         ]);
     }
 }

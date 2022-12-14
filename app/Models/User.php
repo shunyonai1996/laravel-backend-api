@@ -1,15 +1,5 @@
 <?php
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Passport\HasApiTokens;
-
 /**
  * App\Models\User
  *
@@ -41,12 +31,23 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\HasApiTokens;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * インプットの制約
      *
      * @var array<int, string>
      */
@@ -58,7 +59,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * パスワードの保護
      *
      * @var array<int, string>
      */
@@ -68,7 +69,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * 型変換
      *
      * @var array<string, string>
      */
@@ -76,15 +77,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function collection() {
+    public function collection()
+    {
         return $this->belongsTo(Collection::class);
     }
 
-    public function notifications() {
+    public function notifications()
+    {
         return $this->belongsToMany(Noification::class, 'notification_user')->withPivot(['read', 'hide_next'])->using(NotificationUser::class);
     }
 
-    public function auth_user_id() {
+    //現在ログイン中のユーザーIDを取得
+    public function auth_user_id()
+    {
         return Auth::user()->id;
     }
 }

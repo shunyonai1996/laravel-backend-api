@@ -1,11 +1,5 @@
 <?php
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-
 /**
  * App\Models\Notification
  *
@@ -38,6 +32,13 @@ use Illuminate\Support\Facades\DB;
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereUpdatedAt($value)
  */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 class Notification extends Model
 {
     use HasFactory;
@@ -48,42 +49,46 @@ class Notification extends Model
         'image'
     ];
 
-    public function collections() {
+    public function collections()
+    {
         return $this->belongsTo(Collection::class);
     }
-    
-    public function users() {
+
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'notification_user')->withPivot(['read', 'hide_next'])->using(NotificationUser::class);
     }
 
     /**
      * POPUP情報取得クエリ
-     * リクエストユーザーIDを参照し、表示すべきPOPUP情報のみ取得する
+     * リクエストユーザーIDを参照し、表示すべきPOPUPのみreturn
      * 
      * @return string,string|mixed 取得結果
      */
-    public function check_notify_user($auth_user_id) {
+    public function check_notify_user($auth_user_id)
+    {
         $query = DB::table('notifications as n')
-            ->select( 'n.id as id',
-                    'n.image as image',
-                    'n.already_read as already_read', 
-                    'n.hide_next_time as hide_next_time', 
-                    'n.jump_link as jump_link', 
-                    'n.notify_priority as notify_priority',
-                    'nu.read as read',
-                    'nu.hide_next as hide_next' )
-            ->leftJoin('notification_user as nu', function ($join) use($auth_user_id){
+            ->select(
+                'n.id as id',
+                'n.image as image',
+                'n.already_read as already_read',
+                'n.hide_next_time as hide_next_time',
+                'n.jump_link as jump_link',
+                'n.notify_priority as notify_priority',
+                'nu.read as read',
+                'nu.hide_next as hide_next'
+            )
+            ->leftJoin('notification_user as nu', function ($join) use ($auth_user_id) {
                 $join->on('n.id', "=", 'nu.notification_id')
-                ->where('nu.user_id', "=", $auth_user_id);
+                    ->where('nu.user_id', "=", $auth_user_id);
             })
             ->where('start_date', "<=", date("Y-m-d H:i:s"))
             ->where('end_date', ">=", date("Y-m-d H:i:s"))
-            ->where('nu.user_id', null)
+            ->whereNull('nu.user_id')
             ->orderBy('n.notify_priority')
             ->orderBy('n.id')
             ->get();
 
         return $query;
     }
-
 }

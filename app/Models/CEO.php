@@ -1,9 +1,5 @@
 <?php
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\CEO
  *
@@ -27,6 +23,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CEO whereWhatCompanyDoes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CEO whereYear($value)
  */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
 class CEO extends Model
 {
     protected $fillable = [

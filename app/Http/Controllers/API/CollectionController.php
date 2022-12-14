@@ -1,4 +1,5 @@
 <?php
+
 /**
  * POPUP表示グループ情報を登録、削除処理
  * 
@@ -26,7 +27,7 @@ class CollectionController extends Controller
     public function index()
     {
         $collections = Collection::all();
-        return response([ 'collections' => $collections, 'message' => 'Retrieved successfully'], 200);
+        return response(['collections' => $collections, 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -43,13 +44,14 @@ class CollectionController extends Controller
             'name' => ['required']
         ]);
 
-        if($validator->fails()){
-            return response(['error' => $validator->errors(), 'Validation Error']);
+        //バリデーションのチェック
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors()]);
         }
 
         $collection = Collection::create($data);
 
-        return response([ 'collection' => $collection, 'message' => 'Created successfully'], 200);
+        return response(['collection' => $collection, 'message' => 'Created successfully'], 200);
     }
 
     /**
@@ -61,6 +63,7 @@ class CollectionController extends Controller
     public function destroy(Collection $collection)
     {
         $collection->delete();
+
         return response(['message' => 'Deleted']);
     }
 }

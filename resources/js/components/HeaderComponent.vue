@@ -15,20 +15,25 @@
 
  
 <script>
+// author 米内
 export default {
+
     methods: {
-    doLogout() {
-        axios.get('api/logout')
-    .then(response => {
-        sessionStorage.removeItem("access_token");
-        delete axios.defaults.headers['Authorization'];
-        location.href = '/login'
-    }).catch(error=> {
-        console.log(error);
-    });
-    this.$router.push(this.$route.query.redirect);
+        /**
+         * ログアウト
+         */
+        doLogout() {
+            axios.get('api/logout')
+        .then(() => {
+            sessionStorage.removeItem("access_token");
+            delete axios.defaults.headers['Authorization'];
+            location.href = '/login'
+        }).catch(error=> {
+            console.log(error);
+        });
+        this.$router.push(this.$route.query.redirect);
+        }
     }
-    
-  }
+
 }
 </script>

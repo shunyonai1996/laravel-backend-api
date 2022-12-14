@@ -1,11 +1,5 @@
 <?php
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-
 /**
  * App\Models\NotificationUser
  *
@@ -27,11 +21,19 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|NotificationUser whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|NotificationUser whereUserId($value)
  */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+
 class NotificationUser extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['notification_id','user_id','read','hide_next','created_at','updated_at'];
+    protected $fillable = ['notification_id', 'user_id', 'read', 'hide_next', 'created_at', 'updated_at'];
 
+    //Laravelが参照するテーブル名を変更
     protected $table = 'notification_user';
 }

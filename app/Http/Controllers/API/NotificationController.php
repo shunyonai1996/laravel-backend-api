@@ -1,4 +1,5 @@
 <?php
+
 /**
  * POPUP情報を登録、表示、削除するための指令を行う
  * 
@@ -26,17 +27,20 @@ class NotificationController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function notify() {
+    public function notify()
+    {
         $notification = new Notification();
         $user = new User();
-        
-        if(Auth::check()) {
+
+        //認証済みの場合、POPUPを表示する
+        if (Auth::check()) {
+            //Modelのメソッドを変数に代入
             $auth_user_id = $user->auth_user_id();
             $notifies = $notification->check_notify_user($auth_user_id);
-            
-            return response([ 'notifies' => $notifies, 'user_id' => $auth_user_id, 'message' => 'POPUP表示!!!'], 200);
+
+            return response(['notifies' => $notifies, 'user_id' => $auth_user_id, 'message' => 'successfully'], 200);
         } else {
-            return response( '未認証' );
+            return response('未認証');
         }
     }
 
@@ -53,7 +57,7 @@ class NotificationController extends Controller
 
         $hidepopup = NotificationUser::create($data);
 
-        return response([ 'hidepopup' => $hidepopup, 'message' => 'Created successfully'], 200);
+        return response(['hidepopup' => $hidepopup, 'message' => 'Created successfully'], 200);
     }
 
     /**
@@ -66,6 +70,7 @@ class NotificationController extends Controller
     {
         $data = $request->all();
         $notification = Notification::create($data);
+
         $validator = Validator::make($data, [
             'start_date' => 'required',
             'end_date' => 'required',
@@ -76,12 +81,12 @@ class NotificationController extends Controller
             'group_id' => 'required',
             'collection_id' => 'required',
         ]);
-        
-        if($validator->fails()) {
+
+        if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        return response([ 'notification' => new NotificationResource($notification), 'message' => 'Created successfully'], 200);
+        return response(['notification' => new NotificationResource($notification), 'message' => 'Created successfully'], 200);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CEO情報を登録、表示、削除するための指令を行う
  * 
@@ -25,7 +26,7 @@ class CEOController extends Controller
     public function index()
     {
         $ceos = CEO::all();
-        return response([ 'ceos' => CEOResource::collection($ceos), 'message' => 'Retrieved successfully'], 200);
+        return response(['ceos' => CEOResource::collection($ceos), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -45,13 +46,13 @@ class CEOController extends Controller
             'what_company_does' => 'required'
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
         $ceo = CEO::create($data);
 
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Created successfully'], 200);
+        return response(['ceo' => new CEOResource($ceo), 'message' => 'Created successfully'], 200);
     }
 
     /**
@@ -62,7 +63,7 @@ class CEOController extends Controller
      */
     public function show(CEO $ceo)
     {
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Retrived Successflly'], 200);
+        return response(['ceo' => new CEOResource($ceo), 'message' => 'Retrived Successflly'], 200);
     }
 
     /**
@@ -76,7 +77,7 @@ class CEOController extends Controller
     {
         $ceo->update($request->all());
 
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Retrieved successfully'], 200);
+        return response(['ceo' => new CEOResource($ceo), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
