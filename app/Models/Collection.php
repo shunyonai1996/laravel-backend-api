@@ -1,10 +1,5 @@
 <?php
 
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\Collection
  *
@@ -24,6 +19,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
  */
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Collection extends Model
 {
     use HasFactory;
@@ -32,11 +33,13 @@ class Collection extends Model
         'name'
     ];
 
-    public function users() {
+    public function users()
+    {
         return $this->hasMany(User::class);
     }
 
-    public function notifications() {
+    public function notifications()
+    {
         return $this->hasMany(Notification::class);
     }
 }

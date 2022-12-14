@@ -5,7 +5,7 @@
  */
 
 import VueRouter from 'vue-router';
-import VModal from 'vue-js-modal'
+import VModal from 'vue-js-modal';
 import HeaderComponent from "./components/HeaderComponent";
 import LoginComponent from "./components/LoginComponent";
 import HomeComponent from "./components/HomeComponent";
@@ -29,14 +29,12 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('header-component', HeaderComponent);
 Vue.component('login-component', LoginComponent);
 Vue.component('home-component', HomeComponent);
 Vue.component('ceo-component', CeoComponent);
 Vue.component('loading-component', LoadingComponent);
 Vue.component('notification-component', NotificationComponent);
-
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
