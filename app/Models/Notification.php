@@ -35,6 +35,7 @@
 
 namespace App\Models;
 
+use App\Models\Notification as ModelsNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -49,14 +50,13 @@ class Notification extends Model
         'image'
     ];
 
-    public function collections()
-    {
-        return $this->belongsTo(Collection::class);
-    }
-
     public function users()
     {
         return $this->belongsToMany(User::class, 'notification_user')->withPivot(['read', 'hide_next'])->using(NotificationUser::class);
+    }
+
+    public function patterns() {
+        return $this->belongsTo(Patterns::class);
     }
 
     /**

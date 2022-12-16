@@ -34,7 +34,6 @@ class NotificationController extends AdminController
         $grid->column('hide_next_time', __('次回非表示チェックボックス'));
         $grid->column('jump_link', __('詳細ページリンク'));
         $grid->column('notify_priority', __('表示優先度（１が高い）'));
-        $grid->column('collection_id', __('公開グループID'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
@@ -59,7 +58,6 @@ class NotificationController extends AdminController
         $show->field('hide_next_time', __('次回非表示チェックボックス'));
         $show->field('jump_link', __('詳細ページリンク'));
         $show->field('notify_priority', __('表示優先度（１が高い）'));
-        $show->field('collection_id', __('公開グループID'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -80,7 +78,6 @@ class NotificationController extends AdminController
         $form->datetime('end_date', __('掲載終了日'))->default(date('Y-m-d'));
         $form->image('image', __('画像'))->uniqueName();
         $form->url('jump_link', __('詳細ページリンク'));
-        $form->number('collection_id', __('公開グループID'));
         $form->switch('hide_next_time', __('次回非表示チェックボックス')); 
         $form->switch('already_read', __('既読機能の付与'));
         $form->number('notify_priority', __('表示優先度(１が高い)'));

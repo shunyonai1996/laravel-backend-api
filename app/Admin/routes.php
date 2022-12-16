@@ -1,6 +1,8 @@
 <?php
 
+use Encore\Admin\Facades\Admin;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 Admin::routes();
 
@@ -14,5 +16,6 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('/notifications', NotificationController::class);
     $router->resource('/collections', CollectionController::class);
+    $router->resource('/patterns', PatternController::class);
 
 });
