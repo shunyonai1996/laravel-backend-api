@@ -15,7 +15,6 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('/notifications', NotificationController::class);
-    $router->resource('/collections', CollectionController::class);
     $router->resource('/patterns', PatternController::class);
 
 });

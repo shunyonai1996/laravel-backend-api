@@ -8,7 +8,6 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\NotificationController;
 
-Route::apiResource('/collection', CollectionController::class);
 
 Route::get('/user', [UserController::class, 'index']);
 

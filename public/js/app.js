@@ -5493,7 +5493,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      user: "",
+      user: [],
       show: false
     };
   },
@@ -5505,19 +5505,18 @@ __webpack_require__.r(__webpack_exports__);
      * @param {string} password
      */
     doLogin: function doLogin() {
+      var self = this;
       this.show = true;
       axios.post("api/login", {
         email: this.user.email,
         password: this.user.password
       }).then(function (response) {
-        console.log(response);
-        console.log(response.data.access_token);
         sessionStorage.setItem("access_token", response.data.access_token);
         location.href = "/notification";
       })["catch"](function (error) {
         console.log(error);
       });
-      this.$router.push(this.$route.query.redirect);
+      self.$router.push(this.$route.query.redirect);
     }
   }
 });

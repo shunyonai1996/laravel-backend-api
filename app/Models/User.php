@@ -78,7 +78,7 @@ class User extends Authenticatable
     ];
 
     public function patterns() {
-        return $this->belongsToMany(Pattern::class);
+        return $this->belongsToMany(Pattern::class)->withTimestamps();
     }
 
     public function notifications()
