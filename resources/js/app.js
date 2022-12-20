@@ -78,6 +78,11 @@ Vue.component('notification-component', NotificationComponent);
             name: 'notification',
             component: NotificationComponent,
         },
+        {
+            path: '/notification',
+            name: 'notification',
+            component: NotificationComponent,
+        },
      ]
  });
 

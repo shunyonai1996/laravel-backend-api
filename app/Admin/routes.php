@@ -15,6 +15,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('/notifications', NotificationController::class);
+    $router->resource('/pattern_user', PatternUserController::class);
+    $router->post('/pattern_user/import', 'PatternUserController@csvImport');
     $router->resource('/patterns', PatternController::class);
-
 });

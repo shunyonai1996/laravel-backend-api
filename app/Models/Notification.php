@@ -56,7 +56,7 @@ class Notification extends Model
     }
 
     public function patterns() {
-        return $this->belongsTo(Patterns::class);
+        return $this->hasMany(Pattern::class);
     }
 
     /**
