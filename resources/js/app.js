@@ -13,6 +13,7 @@ import CeoComponent from "./components/CeoComponent";
 import CreateComponent from "./components/CreateComponent";
 import LoadingComponent from "./components/LoadingComponent";
 import NotificationComponent from "./components/NotificationComponent";
+import CsvComponent from "./components/CsvComponent";
 
 require('./bootstrap');
 
@@ -34,7 +35,7 @@ Vue.component('login-component', LoginComponent);
 Vue.component('home-component', HomeComponent);
 Vue.component('ceo-component', CeoComponent);
 Vue.component('loading-component', LoadingComponent);
-Vue.component('notification-component', NotificationComponent);
+Vue.component('csv-component', CsvComponent);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -79,9 +80,9 @@ Vue.component('notification-component', NotificationComponent);
             component: NotificationComponent,
         },
         {
-            path: '/notification',
-            name: 'notification',
-            component: NotificationComponent,
+            path: '/csv_upload',
+            name: 'csv_upload',
+            component: CsvComponent,
         },
      ]
  });
