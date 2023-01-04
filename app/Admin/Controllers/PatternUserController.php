@@ -12,6 +12,9 @@ use Goodby\CSV\Import\Standard\Interpreter;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class PatternUserController extends AdminController
 {
@@ -76,7 +79,7 @@ class PatternUserController extends AdminController
             $tools->append(new CsvImport());
         });
         $form->number('pattern_id', __('pattern id'));
-        $form->text('user_id', __('user id'));
+        $form->number('user_id', __('user id'));
 
 
         return $form;
@@ -84,7 +87,6 @@ class PatternUserController extends AdminController
 
     public function csvImport(Request $request)
     {
-        
         $file = $request->file('file');
         $config = new LexerConfig();
         $lexer = new Lexer($config);
@@ -96,26 +98,62 @@ class PatternUserController extends AdminController
 
         // インポートする値を$rowに代入
         $interpreter->addObserver(function (array $row) use (&$rows) {
-            $rows[] = $row;
+            $rows[] = $row + array('2' => date('Y-m-d H:i:s', strtotime('+9hour')), '3' => date('Y-m-d H:i:s', strtotime('+9hour')));
         });
+
 
         // CSVデータをパース
         $lexer->parse($file, $interpreter);
-        foreach ($rows as $key => $value) {
-            // データの作成
-            PatternUser::create([
-                'pattern_id' => $value[0],
-                'user_id' => $value[1],
-            ]);
-        }
+        $data = array();
 
-        return response()->json(
-            [
-                'data' => '成功'
-            ],
-            200,
-            [],
-            JSON_UNESCAPED_UNICODE
-        );
+        // CSVのデータを配列化
+        foreach ($rows as $key => $value) {
+            $arr = array();
+            
+            foreach ($value as $k => $v){
+                switch($k) {
+                    
+                    case 0;
+                    $arr['pattern_id'] = $v;
+                    break;
+                    
+                    case 1;
+                    $arr['user_id'] = $v;
+                    break;
+                    
+                    case 2;
+                    $arr['created_at'] = $v;
+                    break;
+
+                    case 3;
+                    $arr['updated_at'] = $v;
+                    break;
+
+                    default;
+                    break;
+                }
+            }
+
+            // バリデーション処理
+            $validator = Validator::make($arr, [
+                'pattern_id' => 'required',
+                'user_id' => 'required',
+            ]);
+            
+            if($validator->fails()) {
+                $validator->errors()->add('line', $key);
+                return redirect('/admin/patten_user')->withErrors($validator)->withInput();
+            }
+
+            $data[] = $arr;
+            
+        }
+        
+        Log::debug($data);
+
+        PatternUser::query()->delete();
+        PatternUser::insert($data);
+
+        return redirect('/admin/pattern_user')->with('save_message', 'CSV取込完了');
     }
 }

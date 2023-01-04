@@ -17,6 +17,7 @@ class CreatePatternUserTable extends Migration
             $table->id();
             $table->foreignId('pattern_id')->constrained('patterns')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unique(['pattern_id', 'user_id']);
             $table->timestamps();
         });
     }

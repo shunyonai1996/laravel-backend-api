@@ -12,4 +12,5 @@ class PatternUser extends Model
     protected $fillable = ['pattern_id', 'user_id', 'created_at', 'updated_at'];
 
     protected $table = 'pattern_user';
+
 }

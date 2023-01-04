@@ -15,10 +15,10 @@ class CsvImport extends AbstractTool
         return <<< SCRIPT
 
         $('.csv-import').click(function() {
-            var select = document.getElementById('files');
-            document.getElementById("files").click();
+            let select = document.getElementById('files');
+            select.click();
             select.addEventListener('change',function() {
-                var fd = new FormData();
+                let fd = new FormData();
                 fd.append( "file", $("input[name='pattern']").prop("files")[0] );
                 $.ajaxSetup({
                     headers: {
@@ -31,6 +31,14 @@ class CsvImport extends AbstractTool
                     data : fd,
                     processData : false,
                     contentType : false,
+                    success: function (response) {
+                        $.pjax.reload("#pjax-container");
+                        toastr.success('Upload Successful');
+                    },
+                    error: function (response) {
+                        $.pjax.reload("#pjax-container");
+                        toastr.error('Upload Failed(Validation error!!!)');
+                    },
                 });
             });
         });
