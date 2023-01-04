@@ -77,14 +77,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function collection()
-    {
-        return $this->belongsTo(Collection::class);
+    public function patterns() {
+        return $this->belongsToMany(Pattern::class)->withTimestamps();
     }
 
     public function notifications()
     {
-        return $this->belongsToMany(Noification::class, 'notification_user')->withPivot(['read', 'hide_next'])->using(NotificationUser::class);
+        return $this->belongsToMany(Notification::class, 'notification_user')->withPivot(['read', 'hide_next'])->using(NotificationUser::class);
     }
 
     //現在ログイン中のユーザーIDを取得

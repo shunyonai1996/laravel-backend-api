@@ -29,12 +29,7 @@
                     <p>メンテナンス系</p>
                 </div>
 
-                <button
-                    @click="
-                        hidePopup();
-                        nextPopup();
-                    "
-                >
+                <button @click="hidePopup(); nextPopup();">
                     閉じる
                 </button>
             </div>
@@ -125,6 +120,7 @@ export default {
                 .then((response) => {
                     this.notifies = response.data.notifies;
                     this.user_id = response.data.user_id;
+                    console.log(response);
                     //ログイン中に1度POPUPを表示したら、sessionStrageに既読情報を保存
                     sessionStorage.setItem("read", "true");
                 })

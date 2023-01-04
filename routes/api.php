@@ -1,14 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CEOController;
 use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\API\CollectionController;
 use App\Http\Controllers\API\NotificationController;
-
-Route::apiResource('/collection', CollectionController::class);
 
 Route::get('/user', [UserController::class, 'index']);
 

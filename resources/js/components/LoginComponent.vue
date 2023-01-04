@@ -14,7 +14,7 @@
 export default {
     data() {
         return {
-            user: "",
+            user: [],
             show: false,
         };
     },
@@ -26,6 +26,7 @@ export default {
          * @param {string} password
          */
         doLogin: function () {
+            let self = this;
             this.show = true;
             axios
                 .post("api/login", {
@@ -33,8 +34,6 @@ export default {
                     password: this.user.password,
                 })
                 .then(function (response) {
-                    console.log(response);
-                    console.log(response.data.access_token);
                     sessionStorage.setItem(
                         "access_token",
                         response.data.access_token
@@ -44,7 +43,7 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-            this.$router.push(this.$route.query.redirect);
+            self.$router.push(this.$route.query.redirect);
         },
     },
 };
