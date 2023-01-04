@@ -5645,6 +5645,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return axios.get("/api/notify").then(function (response) {
                 _this.notifies = response.data.notifies;
                 _this.user_id = response.data.user_id;
+                console.log(response);
                 //ログイン中に1度POPUPを表示したら、sessionStrageに既読情報を保存
                 sessionStorage.setItem("read", "true");
               })["catch"](function (response) {

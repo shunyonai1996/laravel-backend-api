@@ -35,10 +35,11 @@
 
 namespace App\Models;
 
-use App\Models\Notification as ModelsNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+
+use function Symfony\Component\String\b;
 
 class Notification extends Model
 {
@@ -76,8 +77,16 @@ class Notification extends Model
                 'n.jump_link as jump_link',
                 'n.notify_priority as notify_priority',
                 'nu.read as read',
-                'nu.hide_next as hide_next'
+                'nu.hide_next as hide_next',
+                'pu.pattern_id as pattern_id',
             )
+            ->Join('patterns as p', function ($join) {
+                $join->on('n.id', "=", 'p.notification_id');
+            })
+            ->Join('pattern_user as pu', function ($join) use ($auth_user_id) {
+                $join->on('p.id', "=", 'pu.pattern_id')
+                    ->where('pu.user_id', "=", $auth_user_id);
+            })
             ->leftJoin('notification_user as nu', function ($join) use ($auth_user_id) {
                 $join->on('n.id', "=", 'nu.notification_id')
                     ->where('nu.user_id', "=", $auth_user_id);
