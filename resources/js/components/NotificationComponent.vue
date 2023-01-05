@@ -11,27 +11,41 @@
             :trandition="false"
             :draggable="true"
             :resizable="true"
+            :width="350"
+            :height="600"
         >
             <div class="modal-header">
-                <img :src="`/uploads/${notify.image}`" />
+                <img :src="`/uploads/${notify.image}`" class="popup_img"/>
             </div>
 
             <div class="modal-body">
                 <div v-if="notify.hide_next_time === 1">
-                    <span>次回から表示しない</span>
-                    <input type="checkbox" v-model="hide_next" value="true" />
+                    <div class="d-flex">
+                        <button class="btn btn-primary" @click="detailsPage();">詳しく見る</button>
+                        <button class="btn btn-primary" @click="hidePopup(); nextPopup();">
+                            閉じる
+                        </button>
+                    </div>
+                    <div style="text-align:center;">
+                        <span>次回から表示しない</span>
+                        <input type="checkbox" v-model="hide_next" value="true" />
+                    </div>
                 </div>
                 <div v-else-if="notify.already_read === 1">
-                    <span>読みました</span>
-                    <input type="checkbox" v-model="read" />
+                    <button class="btn btn-primary" @click="hidePopup(); nextPopup();">
+                        閉じる
+                    </button>
+                    <div style="text-align:center;">
+                        <span>読みました</span>
+                        <input type="checkbox" v-model="read" />
+                    </div>
                 </div>
                 <div v-else>
                     <p>メンテナンス系</p>
+
                 </div>
 
-                <button @click="hidePopup(); nextPopup();">
-                    閉じる
-                </button>
+                
             </div>
         </modal>
     </div>
@@ -104,14 +118,25 @@ export default {
          * @param {boolean} hide_next
          */
         nextPopup: function () {
-            if (this.a < this.notifies.length) {
+            if (this.b < this.notifies.length) {
                 this.a++;
                 this.b++;
                 this.hide_next = false;
                 this.read = false;
                 this.i++;
-            }
+            } 
+            // else {
+            //     window.location.href = "/home";
+            // };
         },
+        /**
+         * リンクページへジャンプ
+         * axiosでgetしたjump_linkのリンクへ遷移する
+         * 
+         */
+        detailsPage: function () {
+            window.location.href = this.notifies[this.i].jump_link;
+        }
     },
     async created() {
         if (sessionStorage.getItem("read") === null) {
@@ -121,7 +146,7 @@ export default {
                     this.notifies = response.data.notifies;
                     this.user_id = response.data.user_id;
                     console.log(response);
-                    //ログイン中に1度POPUPを表示したら、sessionStrageに既読情報を保存
+                    //ログイン中に1度POPUPを表示したら、sessionStorageに既読情報を保存
                     sessionStorage.setItem("read", "true");
                 })
                 .catch((response) => console.log(response));

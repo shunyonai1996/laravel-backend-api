@@ -5404,19 +5404,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 // author 米内
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      login: sessionStorage.getItem("access_token")
+    };
+  },
   methods: {
     /**
      * ログアウト
      */
     doLogout: function doLogout() {
-      axios.get('api/logout').then(function () {
+      try {
         sessionStorage.removeItem("access_token");
         delete axios.defaults.headers['Authorization'];
-        location.href = '/login';
-      })["catch"](function (error) {
+        router.push('login');
+      } catch (error) {
         console.log(error);
-      });
-      this.$router.push(this.$route.query.redirect);
+      }
+      ;
     }
   }
 });
@@ -5438,7 +5443,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      message: "Hello Axios",
+      message: "ユーザー一覧",
       users: [],
       errorFlag: false
     };
@@ -5621,13 +5626,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      * @param {boolean} hide_next
      */
     nextPopup: function nextPopup() {
-      if (this.a < this.notifies.length) {
+      if (this.b < this.notifies.length) {
         this.a++;
         this.b++;
         this.hide_next = false;
         this.read = false;
         this.i++;
       }
+      // else {
+      //     window.location.href = "/home";
+      // };
+    },
+
+    /**
+     * リンクページへジャンプ
+     * axiosでgetしたjump_linkのリンクへ遷移する
+     * 
+     */
+    detailsPage: function detailsPage() {
+      window.location.href = this.notifies[this.i].jump_link;
     }
   },
   created: function created() {
@@ -5646,7 +5663,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.notifies = response.data.notifies;
                 _this.user_id = response.data.user_id;
                 console.log(response);
-                //ログイン中に1度POPUPを表示したら、sessionStrageに既読情報を保存
+                //ログイン中に1度POPUPを表示したら、sessionStorageに既読情報を保存
                 sessionStorage.setItem("read", "true");
               })["catch"](function (response) {
                 return console.log(response);
@@ -5685,8 +5702,14 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_vm.show ? _c("loading-component") : _vm._e(), _vm._v(" "), _c("notification-component"), _vm._v(" "), _vm._l(_vm.ceos, function (ceo) {
-    return _c("ul", [_c("li", [_vm._v("CEO名：" + _vm._s(ceo.name))])]);
+  return _c("div", {
+    staticClass: "style1"
+  }, [_vm.show ? _c("loading-component") : _vm._e(), _vm._v(" "), _c("h1", [_vm._v("CEO一覧")]), _vm._v(" "), _vm._l(_vm.ceos, function (ceo) {
+    return _c("p", {
+      staticStyle: {
+        "list-style": "none"
+      }
+    }, [_vm._v("CEO名：" + _vm._s(ceo.name))]);
   })], 2);
 };
 var staticRenderFns = [];
@@ -5710,15 +5733,26 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("input", {
+  return _c("form", {
+    staticClass: "container"
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("CEO名")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.name,
       expression: "name"
     }],
+    staticClass: "form-control",
     attrs: {
-      placeholder: "名前"
+      id: "name",
+      placeholder: "山田 太郎"
     },
     domProps: {
       value: _vm.name
@@ -5729,15 +5763,24 @@ var render = function render() {
         _vm.name = $event.target.value;
       }
     }
-  }), _vm._v(" "), _c("input", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "company"
+    }
+  }, [_vm._v("会社名")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.company_name,
       expression: "company_name"
     }],
+    staticClass: "form-control",
     attrs: {
-      placeholder: "会社名"
+      id: "company",
+      placeholder: "〇〇株式会社"
     },
     domProps: {
       value: _vm.company_name
@@ -5748,15 +5791,24 @@ var render = function render() {
         _vm.company_name = $event.target.value;
       }
     }
-  }), _vm._v(" "), _c("input", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "year"
+    }
+  }, [_vm._v("設立年")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.year,
       expression: "year"
     }],
+    staticClass: "form-control",
     attrs: {
-      placeholder: "設立年"
+      id: "year",
+      placeholder: "2002"
     },
     domProps: {
       value: _vm.year
@@ -5767,15 +5819,24 @@ var render = function render() {
         _vm.year = $event.target.value;
       }
     }
-  }), _vm._v(" "), _c("input", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "main_office"
+    }
+  }, [_vm._v("本社")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.company_headquarters,
       expression: "company_headquarters"
     }],
+    staticClass: "form-control",
     attrs: {
-      placeholder: "本社"
+      id: "main_office",
+      placeholder: "東京都杉並区"
     },
     domProps: {
       value: _vm.company_headquarters
@@ -5786,15 +5847,24 @@ var render = function render() {
         _vm.company_headquarters = $event.target.value;
       }
     }
-  }), _vm._v(" "), _c("input", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "about"
+    }
+  }, [_vm._v("どんな会社？")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.what_company_does,
       expression: "what_company_does"
     }],
+    staticClass: "form-control",
     attrs: {
-      placeholder: "どんな会社？"
+      id: "about",
+      placeholder: "テクノロジー"
     },
     domProps: {
       value: _vm.what_company_does
@@ -5805,11 +5875,17 @@ var render = function render() {
         _vm.what_company_does = $event.target.value;
       }
     }
-  }), _vm._v(" "), _c("button", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "submit"
+    },
     on: {
       click: _vm.addCeo
     }
-  }, [_vm._v("投稿")]), _vm._v(" "), _vm.show ? _c("loading-component") : _vm._e()], 1);
+  }, [_vm._v("投稿")])]), _vm._v(" "), _vm.show ? _c("loading-component") : _vm._e()], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5840,23 +5916,11 @@ var render = function render() {
     staticClass: "navbar navbar-dark"
   }, [_c("span", {
     staticClass: "navbar-brand mb-0 h1"
-  }, [_vm._v("Vue Laravel SPA")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-danger",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: _vm.doLogout
-    }
-  }, [_vm._v("Logout")]), _vm._v(" "), _c("router-link", {
+  }, [_vm._v("OJT-APP")]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: "/home"
     }
   }, [_vm._v("ユーザ一覧")]), _vm._v(" "), _c("router-link", {
-    attrs: {
-      to: "/login"
-    }
-  }, [_vm._v("ログイン")]), _vm._v(" "), _c("router-link", {
     attrs: {
       to: "/ceo"
     }
@@ -5864,7 +5928,18 @@ var render = function render() {
     attrs: {
       to: "/post"
     }
-  }, [_vm._v("登録")])], 1)])]);
+  }, [_vm._v("登録")]), _vm._v(" "), _vm.login == null ? _c("router-link", {
+    attrs: {
+      to: "/login"
+    }
+  }, [_vm._v("ログイン")]) : _vm._e(), _vm._v(" "), _vm.login != null ? _c("a", {
+    attrs: {
+      href: "/login"
+    },
+    on: {
+      click: _vm.doLogout
+    }
+  }, [_vm._v("ログアウト")]) : _vm._e()], 1)])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5949,21 +6024,31 @@ var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c("form", {
+    staticClass: "container",
     on: {
       submit: function submit($event) {
         $event.preventDefault();
         return _vm.doLogin.apply(null, arguments);
       }
     }
-  }, [_c("label", [_vm._v("E-mail")]), _vm._v(" "), _c("input", {
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "email"
+    }
+  }, [_vm._v("E-mail")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.user.email,
       expression: "user.email"
     }],
+    staticClass: "form-control",
     attrs: {
       type: "text",
+      id: "email",
       placeholder: "E-mail"
     },
     domProps: {
@@ -5975,15 +6060,24 @@ var render = function render() {
         _vm.$set(_vm.user, "email", $event.target.value);
       }
     }
-  }), _vm._v(" "), _c("label", [_vm._v("Password")]), _vm._v(" "), _c("input", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    staticClass: "form-label",
+    attrs: {
+      "for": "password"
+    }
+  }, [_vm._v("Password")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: _vm.user.password,
       expression: "user.password"
     }],
+    staticClass: "form-control",
     attrs: {
       type: "password",
+      id: "password",
       placeholder: "password"
     },
     domProps: {
@@ -5995,7 +6089,7 @@ var render = function render() {
         _vm.$set(_vm.user, "password", $event.target.value);
       }
     }
-  }), _vm._v(" "), _c("button", {
+  })]), _vm._v(" "), _c("button", {
     attrs: {
       type: "submit"
     }
@@ -6041,17 +6135,41 @@ var render = function render() {
         reset: true,
         trandition: false,
         draggable: true,
-        resizable: true
+        resizable: true,
+        width: 350,
+        height: 600
       }
     }, [_c("div", {
       staticClass: "modal-header"
     }, [_c("img", {
+      staticClass: "popup_img",
       attrs: {
         src: "/uploads/".concat(notify.image)
       }
     })]), _vm._v(" "), _c("div", {
       staticClass: "modal-body"
-    }, [notify.hide_next_time === 1 ? _c("div", [_c("span", [_vm._v("次回から表示しない")]), _vm._v(" "), _c("input", {
+    }, [notify.hide_next_time === 1 ? _c("div", [_c("div", {
+      staticClass: "d-flex"
+    }, [_c("button", {
+      staticClass: "btn btn-primary",
+      on: {
+        click: function click($event) {
+          return _vm.detailsPage();
+        }
+      }
+    }, [_vm._v("詳しく見る")]), _vm._v(" "), _c("button", {
+      staticClass: "btn btn-primary",
+      on: {
+        click: function click($event) {
+          _vm.hidePopup();
+          _vm.nextPopup();
+        }
+      }
+    }, [_vm._v("\n                        閉じる\n                    ")])]), _vm._v(" "), _c("div", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_c("span", [_vm._v("次回から表示しない")]), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6083,7 +6201,19 @@ var render = function render() {
           }
         }
       }
-    })]) : notify.already_read === 1 ? _c("div", [_c("span", [_vm._v("読みました")]), _vm._v(" "), _c("input", {
+    })])]) : notify.already_read === 1 ? _c("div", [_c("button", {
+      staticClass: "btn btn-primary",
+      on: {
+        click: function click($event) {
+          _vm.hidePopup();
+          _vm.nextPopup();
+        }
+      }
+    }, [_vm._v("\n                    閉じる\n                ")]), _vm._v(" "), _c("div", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_c("span", [_vm._v("読みました")]), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6114,14 +6244,7 @@ var render = function render() {
           }
         }
       }
-    })]) : _c("div", [_c("p", [_vm._v("メンテナンス系")])]), _vm._v(" "), _c("button", {
-      on: {
-        click: function click($event) {
-          _vm.hidePopup();
-          _vm.nextPopup();
-        }
-      }
-    }, [_vm._v("\n                閉じる\n            ")])])]);
+    })])]) : _c("div", [_c("p", [_vm._v("メンテナンス系")])])])]);
   })], 2);
 };
 var staticRenderFns = [];

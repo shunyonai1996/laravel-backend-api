@@ -1,10 +1,8 @@
 <template>
-    <div>
+    <div class="style1">
         <loading-component v-if="show"></loading-component>
-        <notification-component></notification-component>
-        <ul v-for="ceo in ceos">
-            <li>CEO名：{{ ceo.name }}</li>
-        </ul>
+        <h1>CEO一覧</h1>
+        <p v-for="ceo in ceos" style="list-style: none;">CEO名：{{ ceo.name }}</p>
     </div>
 </template>
 

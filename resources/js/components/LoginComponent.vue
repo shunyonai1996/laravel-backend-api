@@ -1,9 +1,13 @@
 <template>
-    <form v-on:submit.prevent="doLogin">
-        <label>E-mail</label>
-        <input type="text" placeholder="E-mail" v-model="user.email" />
-        <label>Password</label>
-        <input type="password" placeholder="password" v-model="user.password" />
+    <form v-on:submit.prevent="doLogin" class="container">
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <input type="text" id="email" class="form-control" placeholder="E-mail" v-model="user.email" />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" class="form-control" placeholder="password" v-model="user.password" />
+        </div>
         <button type="submit">Login</button>
         <loading-component v-if="show"></loading-component>
     </form>

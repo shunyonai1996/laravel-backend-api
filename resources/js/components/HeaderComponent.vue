@@ -2,12 +2,12 @@
     <div class="container-fluid bg-dark mb-3">
         <div class="container">
             <nav class="navbar navbar-dark">
-                <span class="navbar-brand mb-0 h1">Vue Laravel SPA</span>
-                <button type="button" class="btn btn-danger" @click="doLogout">Logout</button>
+                <span class="navbar-brand mb-0 h1">OJT-APP</span>
                 <router-link to='/home'>ユーザ一覧</router-link>
-                <router-link to='/login'>ログイン</router-link>
                 <router-link to='/ceo'>会社一覧</router-link>
                 <router-link to='/post'>登録</router-link>
+                <router-link to='/login' v-if="login == null">ログイン</router-link>
+                <a href="/login" @click="doLogout" v-if="login != null">ログアウト</a>
             </nav>
         </div>
     </div>
@@ -17,21 +17,23 @@
 <script>
 // author 米内
 export default {
-
+    data() {
+        return {
+            login: sessionStorage.getItem("access_token"),
+        };
+    },
     methods: {
         /**
          * ログアウト
          */
         doLogout() {
-            axios.get('api/logout')
-        .then(() => {
+        try {
             sessionStorage.removeItem("access_token");
             delete axios.defaults.headers['Authorization'];
-            location.href = '/login'
-        }).catch(error=> {
+            router.push('login');
+        } catch (error) {
             console.log(error);
-        });
-        this.$router.push(this.$route.query.redirect);
+        };
         }
     }
 

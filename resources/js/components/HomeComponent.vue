@@ -11,7 +11,7 @@
 export default {
     data() {
         return {
-            message: "Hello Axios",
+            message: "ユーザー一覧",
             users: [],
             errorFlag: false,
         };
