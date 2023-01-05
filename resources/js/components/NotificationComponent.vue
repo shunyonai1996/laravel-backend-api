@@ -1,64 +1,171 @@
 <template>
-<div v-if="view">
-  <button v-on:click="show" class="button">モーダルを表示</button>
-  <modal name="hello-world" :draggable="true" :resizable="true" v-show="notification">
-    <div class="modal-header">
-      <h2>{{ notification.title }}</h2>
+    <div>
+        <img src="../../../image/loading.gif" v-show="load" />
+
+        <modal
+            name="modal-window"
+            v-for="(notify, index) in notifies.slice(a, b)"
+            :key="index"
+            :clickToClose="false"
+            :reset="true"
+            :trandition="false"
+            :draggable="true"
+            :resizable="true"
+            :width="350"
+            :height="600"
+        >
+            <div class="modal-header">
+                <img :src="`/uploads/${notify.image}`" class="popup_img"/>
+            </div>
+
+            <div class="modal-body">
+                <div v-if="notify.hide_next_time === 1">
+                    <div class="d-flex">
+                        <button class="btn btn-primary" @click="detailsPage();">詳しく見る</button>
+                        <button class="btn btn-primary" @click="hidePopup(); nextPopup();">
+                            閉じる
+                        </button>
+                    </div>
+                    <div style="text-align:center;">
+                        <span>次回から表示しない</span>
+                        <input type="checkbox" v-model="hide_next" value="true" />
+                    </div>
+                </div>
+                <div v-else-if="notify.already_read === 1">
+                    <button class="btn btn-primary" @click="hidePopup(); nextPopup();">
+                        閉じる
+                    </button>
+                    <div style="text-align:center;">
+                        <span>読みました</span>
+                        <input type="checkbox" v-model="read" />
+                    </div>
+                </div>
+                <div v-else>
+                    <p>メンテナンス系</p>
+
+                </div>
+
+                
+            </div>
+        </modal>
     </div>
-    <div class="modal-body">
-      <p>{{ notification.discription }}</p>
-      <p>掲載期間：{{ notification.created_at }} 〜 {{ notification.end_date }}</p>
-      <input type="checkbox">{{ notification.toggle_view = 1 ? '次回から表示しない' : '' }}
-      <img :src="imgSrc">
-      <button v-on:click="hide">閉じる</button>
-    </div>
-  </modal>
-</div>
 </template>
 
+<!-- Script -->
 <script>
+// author
 export default {
-  data: function() {
-    return {
-      message: "お知らせ機能のテスト",
-      notification: [],
-      errorFlag: false,
-      view: true
-    }
-  },
-  methods: {
-    show : function() {
-      this.$modal.show('hello-world');
-      console.log(this.$modal.show);
+    data() {
+        return {
+            notifies: [],
+            user_id: "",
+            hide_next: false,
+            read: false,
+            a: 0,
+            b: 1,
+            i: 0,
+            load: true,
+        };
     },
-    hide : function () {
-      this.$modal.hide('hello-world');
-      console.log(this.$modal.hide);
+    methods: {
+        /**
+         * モーダルウィンドウを表示
+         */
+        show: function () {
+            this.$modal.show("modal-window");
+            console.log(this.$modal.show);
+        },
+        /**
+         * モーダルウィンドウを閉じる
+         */
+        hide: function () {
+            this.$modal.hide("modal-window");
+            console.log(this.$modal.hide);
+        },
+        /**
+         * 次回POPUP非表示をPOST
+         * 中間テーブルにINSERTする。通信は非同期。
+         * 
+         * @param {number} notification_id
+         * @param {number} user_id
+         * @param {boolean} read 
+         * @param {boolean} hide_next
+         */
+        hidePopup: async function () {
+            if (this.read || this.hide_next) {
+                this.load = true;
+                await axios
+                    .post("/api/hidepopup", {
+                        notification_id: this.notifies[this.i].id,
+                        user_id: this.user_id,
+                        read: this.read,
+                        hide_next: this.hide_next,
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                this.load = false;
+            }
+        },
+        /**
+         * 次のPOPUPを表示
+         * 配列で取得したPOPUPの数だけ表示し、論理値の値をfalseにする
+         * 
+         * @param {number} this.a
+         * @param {number} this.b
+         * @param {number} this.i
+         * @param {boolean} this.hide_next
+         * @param {boolean} hide_next
+         */
+        nextPopup: function () {
+            if (this.b < this.notifies.length) {
+                this.a++;
+                this.b++;
+                this.hide_next = false;
+                this.read = false;
+                this.i++;
+            } 
+            // else {
+            //     window.location.href = "/home";
+            // };
+        },
+        /**
+         * リンクページへジャンプ
+         * axiosでgetしたjump_linkのリンクへ遷移する
+         * 
+         */
+        detailsPage: function () {
+            window.location.href = this.notifies[this.i].jump_link;
+        }
     },
-  },
-  mounted() {
-    axios.get('/api/notification/5')
-    .then(response => {
-      this.notification = response.data.notification;
-      console.log(this.notification)
-    })
-    .catch(response => console.log(response));
-  },
-  computed: {
-    imgSrc () {
-      return ("../../../public/" + this.notification.image)
-    }
-  }
-}
+    async created() {
+        if (sessionStorage.getItem("read") === null) {
+            await axios
+                .get("/api/notify")
+                .then((response) => {
+                    this.notifies = response.data.notifies;
+                    this.user_id = response.data.user_id;
+                    console.log(response);
+                    //ログイン中に1度POPUPを表示したら、sessionStorageに既読情報を保存
+                    sessionStorage.setItem("read", "true");
+                })
+                .catch((response) => console.log(response));
+            this.show();
+            this.load = false;
+        } else {
+            this.load = false;
+        }
+    },
+};
 </script>
-
+<!-- CSS -->
 <style>
 .style1 {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 120px;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 120px;
 }
 </style>

@@ -1,9 +1,17 @@
 <?php
 
+/**
+ * CEO情報を登録、表示、削除するための指令を行う
+ * 
+ * @version 1.0
+ * @author 米内
+ */
+
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\CEO;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\CEOResource;
 use Illuminate\Support\Facades\Validator;
@@ -11,18 +19,18 @@ use Illuminate\Support\Facades\Validator;
 class CEOController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 全てのCEO情報を取得
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $ceos = CEO::all();
-        return response([ 'ceos' => CEOResource::collection($ceos), 'message' => 'Retrieved successfully'], 200);
+        return response(['ceos' => CEOResource::collection($ceos), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * CEO情報登録
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -38,28 +46,28 @@ class CEOController extends Controller
             'what_company_does' => 'required'
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
         $ceo = CEO::create($data);
 
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Created successfully'], 200);
+        return response(['ceo' => new CEOResource($ceo), 'message' => 'Created successfully'], 200);
     }
 
     /**
-     * Display the specified resource.
+     * CEO詳細情報を取得
      *
      * @param  \App\Models\CEO  $ceo
      * @return \Illuminate\Http\Response
      */
     public function show(CEO $ceo)
     {
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Retrived Successflly'], 200);
+        return response(['ceo' => new CEOResource($ceo), 'message' => 'Retrived Successflly'], 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * CEO情報を更新
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\CEO  $ceo
@@ -69,11 +77,11 @@ class CEOController extends Controller
     {
         $ceo->update($request->all());
 
-        return response([ 'ceo' => new CEOResource($ceo), 'message' => 'Retrieved successfully'], 200);
+        return response(['ceo' => new CEOResource($ceo), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * CEO情報を削除
      *
      * @param  \App\Models\CEO  $ceo
      * @return \Illuminate\Http\Response
